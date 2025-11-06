@@ -1,6 +1,6 @@
 (ns metabase.driver.sql.query-processor
   "The Query Processor is responsible for translating the Metabase Query Language into HoneySQL SQL forms."
-  (:refer-clojure :exclude [some mapv every? select-keys])
+  (:refer-clojure :exclude [some mapv every? select-keys empty? not-empty])
   (:require
    [clojure.core.match :refer [match]]
    [clojure.string :as str]
@@ -19,7 +19,7 @@
    [metabase.util.i18n :refer [tru]]
    [metabase.util.log :as log]
    [metabase.util.malli :as mu]
-   [metabase.util.performance :as perf :refer [some mapv every? select-keys]]
+   [metabase.util.performance :as perf :refer [some mapv every? select-keys empty? not-empty]]
    [toucan2.pipeline :as t2.pipeline])
   (:import
    (java.time LocalDate LocalDateTime LocalTime OffsetDateTime OffsetTime ZonedDateTime)
@@ -433,9 +433,9 @@
   `amount` is usually an integer, but can be floating-point for units like seconds.
 
   This multimethod can be extended by drivers in their respective namespaces."
-  {:added "0.34.2" :arglists '([db-type hsql-form amount unit])}
-  (fn [db-type _hsql-form _amount _unit]
-    (keyword db-type)))
+  {:added "0.34.2" :arglists '([driver hsql-form amount unit])}
+  driver/dispatch-on-initialized-driver
+  :hierarchy #'driver/hierarchy)
 
 (mu/defn adjust-start-of-week
   "Truncate to the day the week starts on.
