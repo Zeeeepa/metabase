@@ -286,10 +286,6 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: `color-mix(in srgb, var(--mb-color-brand) 7%, transparent)`, //baseColors.oceanAlpha[10],
     dark: `color-mix(in srgb, var(--mb-color-brand) 7%, transparent)`, //baseColors.oceanAlpha[10],
   },
-  "background-inverse": {
-    light: baseColors.orion[80],
-    dark: baseColors.orion[20],
-  },
 
   "background-selected": {
     light: baseColors.brand[50],
@@ -328,20 +324,7 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.lobster[10],
     dark: baseColors.lobster[90],
   },
-  "border-alpha-30": {
-    //should be border
-    light: baseColors.orionAlpha[20],
-    dark: baseColors.orionAlphaInverse[20],
-  },
-  "border-dark": {
-    //should be border-strong
-    light: baseColors.orionAlpha[50],
-    dark: baseColors.orionAlphaInverse[50],
-  },
-  border: {
-    light: baseColors.orion[20],
-    dark: baseColors.orionAlphaInverse[20],
-  },
+
   "brand-alpha-04": {
     //all of these colors derived from brand should be reworked to fit the values in the new color palette, and to have semantic names
     light: `color-mix(in srgb, var(--mb-color-brand) 4%, transparent)`,
@@ -427,22 +410,15 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.dubloon[30],
     dark: baseColors.dubloon[30],
   },
-  "shadow-embedding-hub-card": {
-    //I think this can be removed?
-    light: "hsla(208, 55%, 77%, 0.70)",
-    dark: "hsla(208, 55%, 77%, 0.70)",
-  },
   shadow: {
     light: baseColors.orionAlpha[20],
     dark: `color-mix(in srgb, ${baseColors.orion[110]} 20%, transparent)`,
   },
-  "success-darker": {
-    //should be success-primary?
+  "success-secondary": {
     light: baseColors.palm[60],
     dark: baseColors.palm[40],
   },
   success: {
-    //should be success-secondary?
     light: baseColors.palm[50],
     dark: baseColors.palm[50],
   },
@@ -579,21 +555,14 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: "#7172AD",
     dark: "#7172AD",
   },
-  "bg-hover": {
-    //I don't think this is used?
-    light: baseColors.orion[5],
-    dark: baseColors.orion[90],
-  },
 
-  "border-primary": {
-    //should be border-strong
+  border: {
+    light: baseColors.orion[20],
+    dark: baseColors.orionAlphaInverse[20],
+  },
+  "border-strong": {
     light: baseColors.orionAlpha[50],
     dark: baseColors.orionAlphaInverse[50],
-  },
-  "border-secondary": {
-    //should be border
-    light: baseColors.orionAlpha[20],
-    dark: baseColors.orionAlphaInverse[20],
   },
   "border-subtle": {
     light: baseColors.orionAlpha[10],

@@ -274,7 +274,7 @@ export function ColumnValue({
           style={{
             objectFit: "cover",
             borderRadius: "0.5rem",
-            border: "1px solid var(--mb-color-border-secondary)",
+            border: "1px solid var(--mb-color-border)",
           }}
         />
       );

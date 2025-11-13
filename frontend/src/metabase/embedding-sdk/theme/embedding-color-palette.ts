@@ -28,7 +28,7 @@ export type SemanticColorKey =
   | "background-hover"
   | "background-selected"
   | "background-disabled"
-  | "background-inverse"
+  | "background-primary-inverse"
   | "background-secondary"
   | "background-brand"
   | "brand-light"

@@ -38,11 +38,11 @@ const COLOR_NAMES = [
   "--mb-color-background",
   "--mb-color-background-selected",
   "--mb-color-background-disabled",
-  "--mb-color-background-inverse",
+  "--mb-color-background-primary-inverse",
   // other colors from css-variables.ts
   "--mb-color-brand-alpha-04",
   "--mb-color-brand-alpha-88",
-  "--mb-color-border-alpha-30",
+  "--mb-color-border",
   "--mb-color-text-primary-inverse",
   "--mb-color-overlay",
   "--mb-color-background-primary-alpha-15",
