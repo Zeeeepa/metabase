@@ -11,7 +11,7 @@ const CardRootMixin = css`
   padding: 1.5rem;
   border: 1px solid var(--mb-color-border);
   border-radius: 0.375rem;
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
   box-shadow: 0 1px 6px var(--mb-color-shadow);
   box-sizing: border-box;
 `;

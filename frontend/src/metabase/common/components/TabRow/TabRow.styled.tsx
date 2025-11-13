@@ -41,9 +41,9 @@ export const ScrollButton = styled.button<ScrollButtonProps>`
 
   background: linear-gradient(
     to ${(props) => props.direction},
-    ${() => alpha("bg-white", 0.1)},
-    ${() => alpha("bg-white", 0.5)},
+    ${() => alpha("background-primary", 0.1)},
+    ${() => alpha("background-primary", 0.5)},
     30%,
-    var(--mb-color-bg-white)
+    var(--mb-color-background-primary)
   );
 `;

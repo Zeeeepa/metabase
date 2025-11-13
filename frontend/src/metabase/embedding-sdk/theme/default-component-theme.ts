@@ -54,9 +54,9 @@ export const DEFAULT_METABASE_COMPONENT_THEME: MetabaseComponentTheme = {
     },
   },
   dashboard: {
-    backgroundColor: "var(--mb-color-bg-white)",
+    backgroundColor: "var(--mb-color-background-primary)",
     card: {
-      backgroundColor: "var(--mb-color-bg-white)",
+      backgroundColor: "var(--mb-color-background-primary)",
     },
   },
   question: {
@@ -78,7 +78,7 @@ export const DEFAULT_METABASE_COMPONENT_THEME: MetabaseComponentTheme = {
     },
     rowToggle: {
       textColor: "text-primary-inverse",
-      backgroundColor: "text-disabled", // TODO: should it be "bg-dark" ?
+      backgroundColor: "text-disabled", // TODO: should it be "background-tertiary-inverse" ?
     },
   },
   cartesian: {

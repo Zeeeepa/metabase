@@ -2,7 +2,7 @@
   padding: 0.75rem;
   min-width: 11.5rem;
   overflow: auto;
-  background-color: var(--mb-colorbackground-primary);
+  background-color: var(--mb-color-background-primary);
   border-color: var(--mb-color-border);
 }
 

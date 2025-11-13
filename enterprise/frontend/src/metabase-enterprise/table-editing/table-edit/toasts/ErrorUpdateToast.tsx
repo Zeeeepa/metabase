@@ -72,7 +72,7 @@ export const ErrorUpdateToast = ({ error }: ErrorUpdateToastProps) => {
 
       <Button
         size="compact-lg"
-        color="bg-darker"
+        c="background-secondary-inverse"
         variant="filled"
         autoContrast
         radius="0.5rem"

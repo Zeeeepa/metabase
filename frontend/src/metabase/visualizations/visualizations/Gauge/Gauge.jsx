@@ -34,11 +34,11 @@ const ARROW_BASE = ARROW_HEIGHT / Math.tan((64 / 180) * Math.PI);
 const ARROW_STROKE_THICKNESS = 1.25;
 
 // colors
-const getBackgroundArcColor = () => color("bg-medium");
+const getBackgroundArcColor = () => color("background-tertiary");
 const getSegmentLabelColor = () => color("text-primary");
 const getCenterLabelColor = () => color("text-primary");
 const getArrowFillColor = () => color("text-secondary-opaque");
-const getArrowStrokeColor = () => color("bg-white");
+const getArrowStrokeColor = () => color("background-primary");
 
 // in ems, but within the scaled 100px SVG element
 const FONT_SIZE_SEGMENT_LABEL = 0.28;

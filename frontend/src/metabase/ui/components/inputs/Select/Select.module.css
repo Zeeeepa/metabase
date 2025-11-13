@@ -38,7 +38,7 @@
 
 .SelectInput {
   color: var(--mb-color-text-primary);
-  background-color: var(--mb-colorbackground-primary);
+  background-color: var(--mb-color-background-primary);
 
   &[data-disabled] {
     opacity: 1;
@@ -80,7 +80,7 @@
   [data-disabled] & {
     opacity: 1;
     color: var(--mb-color-text-disabled);
-    background-color: var(--mb-color-bg-medium);
+    background-color: var(--mb-color-background-tertiary);
 
     &::placeholder {
       color: var(--mb-color-text-disabled);
@@ -153,7 +153,7 @@
 }
 
 .Dropdown {
-  background-color: var(--mb-colorbackground-primary);
+  background-color: var(--mb-color-background-primary);
   border-color: var(--mb-color-border);
 }
 

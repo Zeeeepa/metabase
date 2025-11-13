@@ -39,7 +39,7 @@ export const LocaleButton = styled.span<LocaleContainerProps>`
     color(props.checked ? "text-primary-inverse" : "text-primary")};
   border-radius: 0.25rem;
   background-color: ${(props) =>
-    props.checked ? color("brand") : color("bg-white")};
+    props.checked ? color("brand") : color("background-primary")};
   font-weight: 700;
   border: 2px solid var(--mb-color-white);
 

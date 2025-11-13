@@ -10,7 +10,7 @@
   display: block;
   color: var(--mb-color-text-primary);
   border-radius: var(--mantine-radius-xs);
-  background-color: var(--mb-colorbackground-primary);
+  background-color: var(--mb-color-background-primary);
 
   &::placeholder {
     color: var(--mb-color-text-disabled);

@@ -11,6 +11,6 @@ export const ListBox = styled(Box)<React.PropsWithChildren>`
   background-color: var(--mb-color-background-secondary);
 
   &:last-child {
-    background-color: var(--mb-colorbackground-primary);
+    background-color: var(--mb-color-background-primary);
   }
 ` as unknown as typeof Box;

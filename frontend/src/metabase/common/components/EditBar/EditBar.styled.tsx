@@ -22,7 +22,7 @@ export const Root = styled(FullWidthContainer, {
 
   .${ButtonsS.Button} {
     color: var(--mb-color-text-primary-inverse);
-    background-color: ${() => alpha("bg-white", 0.1)};
+    background-color: ${() => alpha("background-primary", 0.1)};
     border: none;
     font-size: 1em;
     margin-left: 0.75em;
@@ -30,7 +30,7 @@ export const Root = styled(FullWidthContainer, {
 
   .${ButtonsS.ButtonPrimary} {
     color: ${(props) => color(props.admin ? "text-primary" : "brand")};
-    background-color: var(--mb-color-bg-white);
+    background-color: var(--mb-color-background-primary);
   }
 
   .${ButtonsS.Button}:hover {

@@ -14,7 +14,7 @@
 
     .react-ansi-style-inverse {
       color: var(--mb-color-text-primary);
-      background-color: var(--mb-color-bg-white);
+      background-color: var(--mb-color-background-primary);
     }
 
     .react-ansi-style-hidden {

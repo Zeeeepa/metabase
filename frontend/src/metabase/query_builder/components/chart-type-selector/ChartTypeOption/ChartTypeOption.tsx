@@ -67,7 +67,7 @@ export const ChartTypeOption = ({
             radius="xl"
             color="text-disabled"
             variant="viewHeader"
-            bg="bg-white"
+            bg="background-primary"
             className={cx(
               ChartTypeOptionS.BorderedButton,
               ChartTypeOptionS.SettingsButton,

@@ -73,7 +73,7 @@ describe("getDerivedDefaultColorsForEmbedFlow", () => {
     const theme: MetabaseTheme = {};
 
     const appColors = {
-      "bg-white": "#2d3030",
+      "background-primary": "#2d3030",
       "text-primary": "#eee",
     };
 

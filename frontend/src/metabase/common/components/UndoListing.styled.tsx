@@ -66,14 +66,14 @@ export const DefaultText = styled.span`
 
 export const UndoButton = styled(Link)`
   font-weight: bold;
-  background-color: ${() => alpha("bg-white", 0.1)};
+  background-color: ${() => alpha("background-primary", 0.1)};
   padding: 4px 12px;
   margin-left: var(--mantine-spacing-sm);
   border-radius: 8px;
   white-space: nowrap; /* Prevents button from truncating message */
 
   :hover {
-    background-color: ${() => alpha("bg-white", 0.3)};
+    background-color: ${() => alpha("background-primary", 0.3)};
   }
 `;
 

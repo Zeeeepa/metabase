@@ -34,12 +34,11 @@ export const SearchInputContainer = styled.div<{
   ${({ isActive }) => {
     if (isActive) {
       return css`
-        background-color: var(--mb-color-bg-medium);
+        background-color: var(--mb-color-background-tertiary);
       `;
     }
     return css`
-      background-color: var(--mb-color-bg-white);
-
+      background-color: var(--mb-color-background-primary);
       &:hover {
         background-color: var(--mb-color-background-secondary);
       }

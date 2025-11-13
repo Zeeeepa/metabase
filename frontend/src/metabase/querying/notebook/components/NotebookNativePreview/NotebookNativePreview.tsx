@@ -76,7 +76,7 @@ export const NotebookNativePreview = ({
       data-testid="native-query-preview-sidebar"
       w="100%"
       h="100%"
-      bg="bg-white"
+      bg="background-primary"
       display="flex"
       style={{ flexDirection: "column" }}
     >

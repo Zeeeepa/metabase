@@ -20,7 +20,7 @@ export function usePalette(): ColorPalette {
       "text-disabled": theme.fn.themeColor("text-disabled"),
       "text-primary-inverse": theme.fn.themeColor("text-primary-inverse"),
       "text-primary": theme.fn.themeColor("text-primary"),
-      "bg-white": theme.fn.themeColor("bg-white"),
+      "background-primary": theme.fn.themeColor("background-primary"),
     };
   }, [theme]);
 }

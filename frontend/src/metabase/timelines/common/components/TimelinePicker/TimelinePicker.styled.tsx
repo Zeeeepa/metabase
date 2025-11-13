@@ -68,8 +68,8 @@ const selectedStyles = css`
   }
 
   ${CardIconContainer} {
-    border-color: var(--mb-color-bg-white);
-    background-color: var(--mb-color-bg-white);
+    border-color: var(--mb-color-background-primary);
+    background-color: var(--mb-color-background-primary);
   }
 `;
 

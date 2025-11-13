@@ -12,7 +12,7 @@ export const originalColors = getColors();
 export const aliases: Record<string, (palette: ColorPalette) => string> = {
   dashboard: (palette) => color("brand", palette),
   document: (palette) => color("brand", palette),
-  nav: (palette) => color("bg-white", palette),
+  nav: (palette) => color("background-primary", palette),
   content: (palette) => color("background-secondary", palette),
   database: (palette) => color("accent2", palette),
   pulse: (palette) => color("accent4", palette),

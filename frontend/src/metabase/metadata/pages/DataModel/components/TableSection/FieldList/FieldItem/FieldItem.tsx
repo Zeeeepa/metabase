@@ -104,7 +104,7 @@ export const FieldItem = ({ active, field, href, parent }: Props) => {
   return (
     <Card
       aria-label={field.display_name}
-      bg={active ? "brand-light" : "bg-white"}
+      bg={active ? "brand-light" : "background-primary"}
       c="text-secondary"
       className={cx(S.card, {
         [S.active]: active,

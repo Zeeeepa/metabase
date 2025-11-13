@@ -79,7 +79,7 @@ export const ActionRunButtonContainer = styled.div`
 `;
 
 export const ActionRunButton = styled(Button)`
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
   color: var(--mb-color-text-primary);
 `;
 
@@ -89,6 +89,6 @@ export const ImplicitActionCardContentRoot = styled.div`
   display: flex;
   align-items: center;
   color: var(--mb-color-text-secondary);
-  background-color: var(--mb-color-bg-medium);
+  background-color: var(--mb-color-background-tertiary);
   font-weight: 400;
 `;

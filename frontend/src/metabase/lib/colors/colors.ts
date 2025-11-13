@@ -51,7 +51,7 @@ const baseColors = {
 
   // Deprecated Gray
   gray: {
-    100: "hsla(206, 16%, 8%, 1.00)", // bg-black
+    100: "hsla(206, 16%, 8%, 1.00)", // background-primary-inverse
     90: "hsla(202, 15%, 15%, 1.00)",
     80: "hsla(205, 15%, 23%, 1.00)",
     70: "hsla(206, 14%, 32%, 1.00)",
@@ -301,34 +301,31 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
   "background-primary": {
     light: baseColors.white,
     dark: baseColors.orion[100],
-  }, //should be background-primary
-  "bg-black-alpha-60": {
+  },
+  "background-primary-inverse": {
+    light: baseColors.orion[80],
+    dark: baseColors.orion[20],
+  },
+  overlay: {
     //should be called overlay? this label is not semantic
     light: baseColors.orionAlpha[60],
     dark: baseColors.orionAlpha[70],
   },
-  "bg-black": { light: baseColors.orion[80], dark: baseColors.orion[20] }, //should be background-primary-inverse
-  "bg-dark": { light: baseColors.orion[40], dark: baseColors.orion[70] }, //should be background-tertiary-inverse
-  "bg-darker": { light: baseColors.orion[70], dark: baseColors.orion[30] }, //should be background-secondary-inverse
-  "bg-error": { light: baseColors.lobster[10], dark: baseColors.lobster[90] }, //should be background-error
+  "background-tertiary": {
+    light: baseColors.orion[10],
+    dark: baseColors.orion[80],
+  },
+  "background-tertiary-inverse": {
+    light: baseColors.orion[40],
+    dark: baseColors.orion[70],
+  },
+  "background-secondary-inverse": {
+    light: baseColors.orion[70],
+    dark: baseColors.orion[30],
+  }, // Only used one place
   "background-error": {
     light: baseColors.lobster[10],
     dark: baseColors.lobster[90],
-  },
-  "bg-medium": { light: baseColors.orion[10], dark: baseColors.orion[80] }, //should be background-tertiary
-  "bg-night": { light: baseColors.orion[70], dark: baseColors.orion[30] }, //merge with background-secondary-inverse?
-  "bg-white-alpha-15": {
-    light: baseColors.orionAlphaInverse[20],
-    dark: baseColors.orionAlphaInverse[20],
-  },
-  "bg-white": {
-    //should be background-primary
-    light: baseColors.white,
-    dark: baseColors.orion[100],
-  },
-  "bg-yellow": {
-    light: baseColors.dubloon[5],
-    dark: baseColors.dubloon[90],
   },
   "border-alpha-30": {
     //should be border
@@ -529,8 +526,8 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
   },
 
   "background-warning": {
-    light: baseColors.dubloon[10],
-    dark: baseColors.dubloon[60],
+    light: baseColors.dubloon[5],
+    dark: baseColors.dubloon[90],
   },
 
   info: {
@@ -599,11 +596,7 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.orion[5],
     dark: baseColors.orion[90],
   },
-  overlay: {
-    //see the other color above where I mentioned it should be called overlay
-    light: baseColors.orionAlpha[60],
-    dark: "hsla(207, 100%, 4.3%, 0.8)", // FIXME: should be part of palette
-  },
+
   "border-primary": {
     //should be border-strong
     light: baseColors.orionAlpha[50],

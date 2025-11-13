@@ -34,7 +34,7 @@
 }
 
 .structure {
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
   border-bottom: 1px solid var(--mb-color-border);
   font-size: 0.75rem;
   color: var(--mb-color-text-secondary);

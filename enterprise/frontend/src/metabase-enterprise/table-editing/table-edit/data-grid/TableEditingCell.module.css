@@ -4,7 +4,7 @@
   outline-offset: -2px;
   border-color: transparent;
   box-sizing: border-box;
-  background-color: var(--mb-colorbackground-primary);
+  background-color: var(--mb-color-background-primary);
   border-radius: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -40,13 +40,13 @@
 }
 
 .errorCell {
-  background-color: var(--mb-color-bg-yellow);
+  background-color: var(--mb-color-background-warning);
   outline: 2px solid var(--mb-color-warning);
   outline-offset: -2px;
   border-radius: 0.25rem;
 
   &:hover {
-    background-color: var(--mb-color-bg-yellow);
+    background-color: var(--mb-color-background-warning);
   }
 }
 
@@ -54,7 +54,7 @@
   background: linear-gradient(
     110deg,
     var(--mb-color-background-secondary) 8%,
-    var(--mb-color-bg-white) 18%,
+    var(--mb-color-background-primary) 18%,
     var(--mb-color-background-secondary) 33%
   );
   background-size: 200% 100%;

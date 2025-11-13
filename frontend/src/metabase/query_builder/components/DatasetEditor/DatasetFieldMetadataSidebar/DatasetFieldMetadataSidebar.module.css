@@ -1,7 +1,7 @@
 .Divider {
   height: 1px;
   width: 100%;
-  background-color: var(--mb-color-bg-medium);
+  background-color: var(--mb-color-background-tertiary);
 }
 
 .MainFormContainer {

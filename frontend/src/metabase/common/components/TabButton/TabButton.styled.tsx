@@ -101,7 +101,7 @@ export const MenuButton = styled(Button)<TabButtonProps & { isOpen: boolean }>`
     !props.disabled &&
     css`
       color: var(--mb-color-brand);
-      background-color: var(--mb-color-bg-medium);
+      background-color: var(--mb-color-background-tertiary);
     `}
   &:hover,:focus {
     ${(props) =>
@@ -111,7 +111,7 @@ export const MenuButton = styled(Button)<TabButtonProps & { isOpen: boolean }>`
           `
         : css`
             color: var(--mb-color-brand);
-            background-color: var(--mb-color-bg-medium);
+            background-color: var(--mb-color-background-tertiary);
           `}
   }
 `;

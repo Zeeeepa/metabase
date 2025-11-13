@@ -6,7 +6,7 @@ import Radio from "metabase/common/components/Radio";
 import { darken } from "metabase/lib/colors";
 
 export const FormFieldContainer = styled.div`
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
   border: 1px solid var(--mb-color-border);
   border-radius: var(--mantine-spacing-sm);
   overflow: hidden;

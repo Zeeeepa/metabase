@@ -31,7 +31,7 @@
 }
 
 .noResultsIcon {
-  background-color: var(--mb-color-bg-medium);
+  background-color: var(--mb-color-background-tertiary);
   border-radius: 100%;
   color: var(--mb-color-text-secondary);
 }

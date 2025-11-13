@@ -10,7 +10,9 @@ export const ChunkyListItem = styled.button<{
   padding: 1.5rem;
   cursor: pointer;
   background-color: ${({ isSelected }) =>
-    isSelected ? "var(--mb-color-brand)" : "var(--mb-color-bg-white)"};
+    isSelected
+      ? "var(--mb-color-brand)"
+      : "var(--mb-color-background-primary)"};
   color: ${({ isSelected }) =>
     isSelected
       ? "var(--mb-color-text-primary-inverse)"

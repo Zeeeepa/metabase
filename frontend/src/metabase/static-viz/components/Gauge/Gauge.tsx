@@ -106,7 +106,10 @@ export default function Gauge({
                   <Group className="visx-pie-arcs-group">
                     {baseArcPath && (
                       <g>
-                        <path d={baseArcPath} fill={getColor("bg-medium")} />
+                        <path
+                          d={baseArcPath}
+                          fill={getColor("background-tertiary")}
+                        />
                       </g>
                     )}
                     {pie.arcs.map((arc, index) => {
@@ -140,7 +143,7 @@ export default function Gauge({
               }}
             </Pie>
             <GaugeNeedle
-              color={getColor("bg-dark")}
+              color={getColor("background-tertiary-inverse")}
               outlineColor={outlineColor}
               position={gaugeNeedlePosition}
               valueAngle={gaugeNeedleAngle}

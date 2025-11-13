@@ -66,7 +66,7 @@ export const InputField = styled.input<InputProps>`
   background-color: ${(props) =>
     props.readOnly
       ? "var(--mb-color-background-disabled)"
-      : "var(--mb-colorbackground-primary)"};
+      : "var(--mb-color-background-primary)"};
   outline: none;
   text-align: inherit;
 

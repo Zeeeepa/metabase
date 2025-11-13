@@ -74,7 +74,7 @@ export const AdminButtons = styled.div`
 `;
 
 export const AdminActionButton = styled.button`
-  border: 1px solid ${() => alpha("bg-white", 0.2)};
+  border: 1px solid ${() => alpha("background-primary", 0.2)};
   height: 2.625rem;
   width: 2.625rem;
   display: flex;
@@ -89,7 +89,7 @@ export const AdminActionButton = styled.button`
   text-align: center;
 
   &:disabled {
-    color: ${() => alpha("bg-white", 0.2)};
+    color: ${() => alpha("background-primary", 0.2)};
   }
 
   &:hover {
@@ -98,13 +98,13 @@ export const AdminActionButton = styled.button`
     border-color: ${() => darken("admin-navbar")};
 
     &:disabled {
-      color: ${() => alpha("bg-white", 0.2)};
+      color: ${() => alpha("background-primary", 0.2)};
     }
   }
 `;
 
 export const AdminExitLink = styled(Link)`
-  border: 1px solid ${() => alpha("bg-white", 0.2)};
+  border: 1px solid ${() => alpha("background-primary", 0.2)};
   padding: 12px 18px;
   border-radius: 5px;
   font-weight: 700;

@@ -22,7 +22,7 @@ export const TextAreaRoot = styled.textarea<TextAreaRootProps>`
   background-color: ${(props) =>
     props.readOnly
       ? "var(--mb-color-background-secondary)"
-      : "var(--mb-color-bg-white)"};
+      : "var(--mb-color-background-primary)"};
   outline: none;
   text-align: inherit;
 

@@ -16,7 +16,7 @@ const SettingsAsideBlock = styled.div`
   width: 21.6rem;
   padding: 2rem;
   border-right: 1px solid var(--mb-color-border);
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
   height: 45.125rem;
   overflow-y: auto;
 `;

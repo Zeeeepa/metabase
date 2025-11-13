@@ -43,7 +43,7 @@ body:where(:global(.mb-wrapper)) {
 .ParameterPanel.IsSticky {
   background-color: color-mix(
     in srgb,
-    var(--mb-color-bg-white),
+    var(--mb-color-background-primary),
     var(--mb-color-bg-dashboard) 15%
   );
   border-bottom-color: var(--mb-color-border);
@@ -73,7 +73,9 @@ body:where(:global(.mb-wrapper)) {
     var(--mb-color-text-primary-inverse) 45%,
     transparent
   );
-  --mb-color-background-secondary: var(--mb-color-bg-darker);
+  --mb-color-background-secondary: var(
+    --mb-color-background-tertiary-inverseer
+  );
 }
 
 .NoBackground {
@@ -101,7 +103,7 @@ body:where(:global(.mb-wrapper)) {
   .ParameterPanel.IsSticky {
     background-color: color-mix(
       in srgb,
-      var(--mb-color-bg-white),
+      var(--mb-color-background-primary),
       transparent 15%
     );
     border-bottom-color: transparent;

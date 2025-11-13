@@ -77,7 +77,10 @@ const SuggestionsList = ({
                     <h4 className={CS.textWrap}>{item.title}</h4>
                     <Box ml="auto" className={CS.hoverChild}>
                       <Tooltip label={item.description}>
-                        <Icon name="info_outline" c="bg-dark" />
+                        <Icon
+                          name="info_outline"
+                          c="background-tertiary-inverse"
+                        />
                       </Tooltip>
                     </Box>
                   </Flex>

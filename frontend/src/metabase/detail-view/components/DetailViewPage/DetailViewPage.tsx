@@ -64,7 +64,7 @@ export function DetailViewPage({
     >
       {headerColumns.length > 0 && (
         <Box
-          bg="bg-white"
+          bg="background-primary"
           className={S.header}
           pl={rem(paddingLeft)}
           pr="xl"
@@ -89,7 +89,7 @@ export function DetailViewPage({
       >
         <Group
           align="flex-start"
-          bg="bg-white"
+          bg="background-primary"
           flex="1"
           p="xl"
           pl={rem(paddingLeft)}

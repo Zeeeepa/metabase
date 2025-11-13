@@ -56,7 +56,7 @@ const getCellBackgroundColor = ({
 
   if (isEmphasized) {
     if (isDarkMode) {
-      return color("bg-black");
+      return color("background-primary-inverse");
     }
 
     if (backgroundColor) {
@@ -67,10 +67,10 @@ const getCellBackgroundColor = ({
   }
 
   if (isDarkMode) {
-    return alpha("bg-black", 0.1);
+    return alpha("background-primary-inverse", 0.1);
   }
 
-  return color(backgroundColor ?? "bg-white");
+  return color(backgroundColor ?? "background-primary");
 };
 
 const getCellHoverBackground = (

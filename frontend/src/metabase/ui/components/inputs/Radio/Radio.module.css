@@ -34,7 +34,7 @@
 
   &:disabled:not(:checked) {
     border-color: var(--mb-color-text-disabled);
-    background-color: var(--mb-color-bg-medium);
+    background-color: var(--mb-color-background-tertiary);
   }
 }
 

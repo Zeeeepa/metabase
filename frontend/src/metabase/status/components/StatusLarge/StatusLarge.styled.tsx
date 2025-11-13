@@ -8,7 +8,7 @@ import { color } from "metabase/ui/utils/colors";
 export const StatusRoot = styled.div`
   width: 16rem;
   border-radius: 6px;
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
   box-shadow: 0 1px 12px var(--mb-color-shadow);
   overflow: hidden;
   margin-top: 1rem;
@@ -37,7 +37,7 @@ export const StatusToggle = styled(IconButtonWrapper)`
 `;
 
 export const StatusBody = styled.div`
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
 `;
 
 export const StatusCardRoot = styled.div<{ hasBody?: boolean }>`
@@ -73,7 +73,7 @@ export const StatusCardTitle = styled.div`
 `;
 
 export const StatusCardDescription = styled.div`
-  color: var(--mb-color-bg-dark);
+  color: var(--mb-color-background-tertiary-inverse);
   font-size: 0.6875rem;
   font-weight: bold;
   line-height: 0.8125rem;

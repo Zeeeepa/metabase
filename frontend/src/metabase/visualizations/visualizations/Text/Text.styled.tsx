@@ -275,7 +275,7 @@ export const ReactMarkdownStyleWrapper = styled.div`
   }
 
   .text-card-markdown tr:nth-of-type(even) {
-    background-color: ${() => alpha("bg-black", 0.05)};
+    background-color: ${() => alpha("background-primary-inverse", 0.05)};
   }
 
   .text-card-markdown th,

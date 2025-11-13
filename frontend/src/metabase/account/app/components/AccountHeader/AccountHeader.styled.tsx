@@ -14,7 +14,7 @@ export const AccountHeaderRoot = styled.div`
   align-items: center;
   padding-top: var(--mantine-spacing-sm);
   border-bottom: 1px solid var(--mb-color-border);
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
 
   ${breakpointMinSmall} {
     padding-top: var(--mantine-spacing-md);

@@ -1,5 +1,5 @@
 .badge {
-  background: var(--mb-color-bg-medium);
+  background: var(--mb-color-background-tertiary);
   border-radius: 0.25rem;
   user-select: none;
 }

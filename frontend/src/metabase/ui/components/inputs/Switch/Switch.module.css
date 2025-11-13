@@ -9,7 +9,7 @@
 
   &[data-disabled] {
     .track {
-      background-color: var(--mb-color-bg-medium);
+      background-color: var(--mb-color-background-tertiary);
     }
 
     .thumb {
@@ -81,7 +81,7 @@
   background-color: var(--mb-color-switch-off);
 
   input:not(:checked) + & {
-    background-color: var(--mb-color-bg-medium);
+    background-color: var(--mb-color-background-tertiary);
   }
 
   input:checked + & {
@@ -89,7 +89,7 @@
   }
 
   input:disabled + & {
-    background-color: var(--mb-color-bg-medium);
+    background-color: var(--mb-color-background-tertiary);
   }
 }
 

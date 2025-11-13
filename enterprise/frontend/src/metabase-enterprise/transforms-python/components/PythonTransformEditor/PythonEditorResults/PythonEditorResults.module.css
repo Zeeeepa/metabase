@@ -37,7 +37,7 @@
 
 .info {
   color: var(--mb-color-text-primary);
-  border: 1px solid var(--mb-color-bg-medium);
+  border: 1px solid var(--mb-color-background-tertiary);
   background-color: var(--mb-color-background-secondary);
 }
 

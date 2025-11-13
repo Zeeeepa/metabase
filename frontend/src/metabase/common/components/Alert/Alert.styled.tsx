@@ -16,7 +16,7 @@ interface AlertRootProps {
 
 const colorsByVariant = {
   border: {
-    info: "var(--mb-color-bg-medium)",
+    info: "var(--mb-color-background-tertiary)",
     error: color("error"),
     warning: color("warning"),
   },

@@ -24,7 +24,7 @@
 }
 
 .step.stepDone .stepIcon {
-  color: var(--mb-color-bg-white);
+  color: var(--mb-color-background-primary);
   background: var(--mb-color-success-darker);
 
   /** Prevent blue border color from affecting the done icon */

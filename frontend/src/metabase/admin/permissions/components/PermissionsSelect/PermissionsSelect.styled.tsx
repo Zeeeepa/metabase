@@ -45,7 +45,7 @@ export const ActionsList = styled(OptionsList)`
 export const ToggleContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: var(--mb-color-bg-medium);
+  background-color: var(--mb-color-background-tertiary);
   padding: 0.5rem 1rem;
   justify-content: flex-end;
 `;

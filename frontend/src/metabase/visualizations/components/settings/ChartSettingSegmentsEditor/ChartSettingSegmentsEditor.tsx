@@ -120,7 +120,7 @@ function getColorPalette() {
     color("error"),
     color("warning"),
     color("success"),
-    color("bg-medium"),
+    color("background-tertiary"),
   ];
 }
 

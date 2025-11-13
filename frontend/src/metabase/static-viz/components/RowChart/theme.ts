@@ -11,13 +11,13 @@ export const getStaticChartTheme = (
       ticks: {
         size: 12,
         weight: 700,
-        color: getColor("bg-dark"),
+        color: getColor("background-tertiary-inverse"),
         family: fontFamily,
       },
       label: {
         size: 14,
         weight: 700,
-        color: getColor("bg-dark"),
+        color: getColor("background-tertiary-inverse"),
         family: fontFamily,
       },
     },

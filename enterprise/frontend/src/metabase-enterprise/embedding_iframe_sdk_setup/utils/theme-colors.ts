@@ -18,7 +18,7 @@ export const getConfigurableThemeColors = () =>
     {
       name: t`Background color`,
       key: "background",
-      originalColorKey: "bg-white",
+      originalColorKey: "background-primary",
     },
   ] as const satisfies {
     name: string;

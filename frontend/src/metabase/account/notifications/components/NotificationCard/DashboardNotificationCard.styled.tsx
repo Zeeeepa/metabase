@@ -9,7 +9,7 @@ export const NotificationCardRoot = styled.div`
   padding: 1rem 1.5rem;
   border: 1px solid var(--mb-color-border);
   border-radius: 6px;
-  background-color: var(--mb-color-bg-white);
+  background-color: var(--mb-color-background-primary);
 
   &:not(:last-child) {
     margin-bottom: 1.25rem;

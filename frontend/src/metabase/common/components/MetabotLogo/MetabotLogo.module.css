@@ -10,6 +10,6 @@
     --metabot-face: var(--mb-color-background-secondary);
     --metabot-face-bg: var(--mb-color-brand);
     --metabot-buttons-bg: var(--mb-color-brand-light);
-    --metabot-frames: var(--mb-color-bg-white);
+    --metabot-frames: var(--mb-color-background-primary);
   }
 }

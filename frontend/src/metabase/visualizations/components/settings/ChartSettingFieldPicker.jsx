@@ -94,7 +94,7 @@ export const ChartSettingFieldPicker = ({
     <ChartSettingFieldPickerRoot
       className={className}
       data-testid="chartsettings-field-picker"
-      bg="bg-white"
+      bg="background-primary"
       align="center"
     >
       <ChartSettingSelect
@@ -175,7 +175,9 @@ export const ChartSettingFieldPicker = ({
             textOverflow: "ellipsis",
             fontWeight: "bold",
 
-            backgroundColor: disabled ? "var(--mb-color-bg-white)" : "inherit",
+            backgroundColor: disabled
+              ? "var(--mb-color-background-primary)"
+              : "inherit",
 
             border: "none",
             width: "100%",

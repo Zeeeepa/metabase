@@ -50,7 +50,7 @@ export const OptionItem = styled.div<OptionItemProps>`
         `
       : css`
           color: var(--mb-color-text-primary);
-          background-color: var(--mb-colorbackground-primary);
+          background-color: var(--mb-color-background-primary);
         `}
 
   &:hover {
