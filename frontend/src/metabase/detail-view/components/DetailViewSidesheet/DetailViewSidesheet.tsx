@@ -367,7 +367,7 @@ export function DetailViewSidesheet({
             tableForeignKeys.length > 0 && (
               <Box
                 flex="1"
-                bg="var(--mb-color-background-light)"
+                bg="var(--mb-color-background-secondary)"
                 px={rem(56)}
                 py={rem(48)}
               >

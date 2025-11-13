@@ -1,5 +1,5 @@
 .metabaseLink {
-  --mb-color-background: var(--mb-color-bg-light);
+  --mb-color-background: var(--mb-color-background-secondary);
   /* SVG logo */
   --mb-color-logo-text: #5a6072;
   --mb-color-logo-primary: var(--mb-color-metabase-brand);
@@ -13,7 +13,7 @@
   border: 1px solid var(--mb-color-border);
   border-radius: 0.75rem;
   padding: 0.4688rem 0.75rem;
-  background: var(--mb-color-background);
+  background: var(--mb-colorbackground-primary);
   color: var(--mb-color-text-primary);
 }
 

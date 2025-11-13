@@ -30,7 +30,7 @@ export const CardRootLink = styled(ExternalLink)`
   ${CardRootMixin};
 
   &:hover {
-    background-color: var(--mb-color-bg-light);
+    background-color: var(--mb-color-background-secondary);
   }
 `;
 

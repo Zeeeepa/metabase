@@ -73,7 +73,7 @@ body:where(:global(.mb-wrapper)) {
     var(--mb-color-text-primary-inverse) 45%,
     transparent
   );
-  --mb-color-bg-light: var(--mb-color-bg-darker);
+  --mb-color-background-secondary: var(--mb-color-bg-darker);
 }
 
 .NoBackground {

@@ -17,7 +17,7 @@ export const InnerCircle = styled.div<{ isVisible: boolean }>`
   border-radius: 50%;
   color-adjust: exact;
   background-color: ${(props) =>
-    props.isVisible ? props.color : "var(--mb-color-background)"};
+    props.isVisible ? props.color : "var(--mb-colorbackground-primary)"};
   border: 2px solid
     ${(props) =>
       props.isVisible ? props.color : "var(--mb-color-text-disabled)"};

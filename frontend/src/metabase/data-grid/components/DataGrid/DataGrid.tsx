@@ -142,11 +142,11 @@ export const DataGrid = function DataGrid<TData>({
 
   const rowsCount = table.getRowModel().rows.length;
   const backgroundColor =
-    theme?.cell?.backgroundColor ?? "var(--mb-color-background)";
+    theme?.cell?.backgroundColor ?? "var(--mb-colorbackground-primary)";
   const stickyElementsBackgroundColor =
     theme?.stickyBackgroundColor ??
     (backgroundColor == null || backgroundColor === "transparent"
-      ? "var(--mb-color-background)"
+      ? "var(--mb-colorbackground-primary)"
       : backgroundColor);
 
   return (

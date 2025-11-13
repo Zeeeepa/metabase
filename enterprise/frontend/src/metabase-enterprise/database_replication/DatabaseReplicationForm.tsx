@@ -203,7 +203,7 @@ export const DatabaseReplicationForm = ({
 
               <Card
                 radius="md"
-                bg="var(--mb-color-bg-light)"
+                bg="var(--mb-color-background-secondary)"
                 p={0}
                 shadow="none"
               >
@@ -295,7 +295,7 @@ export const DatabaseReplicationForm = ({
 
               <Card
                 radius="md"
-                bg="var(--mb-color-bg-light)"
+                bg="var(--mb-color-background-secondary)"
                 p={0}
                 shadow="none"
               >
@@ -387,7 +387,7 @@ export const DatabaseReplicationForm = ({
 
               <Card
                 radius="md"
-                bg="var(--mb-color-bg-light)"
+                bg="var(--mb-color-background-secondary)"
                 p="md"
                 my="sm"
                 shadow="none"

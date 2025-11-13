@@ -1,7 +1,7 @@
 /* This class should be set to the ECharts tooltip root element via option to override ECharts defaults */
 .ChartTooltipRoot {
   font: unset !important;
-  background-color: var(--mb-color-tooltip-background) !important;
+  background-color: var(--mb-color-tooltipbackground-primary) !important;
   border: none !important;
   padding: 0 !important;
   color: var(--mb-color-tooltip-text) !important;
@@ -27,7 +27,7 @@
   font-weight: 400;
   font-size: 13px;
   color: var(--mb-color-tooltip-text-secondary);
-  background: var(--mb-color-tooltip-background);
+  background: var(--mb-color-tooltipbackground-primary);
   z-index: 1;
 }
 
@@ -108,7 +108,7 @@
 .FooterRow {
   position: sticky;
   bottom: 0;
-  background: var(--mb-color-tooltip-background);
+  background: var(--mb-color-tooltipbackground-primary);
   z-index: 1;
 }
 
@@ -118,5 +118,9 @@
 }
 
 .SecondaryRow .NameCell {
-  color: color-mix(in srgb, #fff 90%, var(--mb-color-tooltip-background));
+  color: color-mix(
+    in srgb,
+    #fff 90%,
+    var(--mb-color-tooltipbackground-primary)
+  );
 }

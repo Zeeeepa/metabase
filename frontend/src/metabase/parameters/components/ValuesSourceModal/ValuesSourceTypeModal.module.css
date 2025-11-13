@@ -1,5 +1,5 @@
 .info {
-  background-color: var(--mb-color-bg-light);
+  background-color: var(--mb-color-background-secondary);
   border-radius: var(--default-border-radius);
 }
 
@@ -56,7 +56,7 @@
   padding: 2rem;
   border: 1px solid var(--mb-color-border);
   border-radius: 0.5rem;
-  background-color: var(--mb-color-bg-light);
+  background-color: var(--mb-color-background-secondary);
   color: var(--mb-color-text-secondary);
   font-weight: bold;
   line-height: 1.5rem;

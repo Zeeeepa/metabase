@@ -38,7 +38,7 @@
 
 .SelectInput {
   color: var(--mb-color-text-primary);
-  background-color: var(--mb-color-background);
+  background-color: var(--mb-colorbackground-primary);
 
   &[data-disabled] {
     opacity: 1;
@@ -153,7 +153,7 @@
 }
 
 .Dropdown {
-  background-color: var(--mb-color-background);
+  background-color: var(--mb-colorbackground-primary);
   border-color: var(--mb-color-border);
 }
 

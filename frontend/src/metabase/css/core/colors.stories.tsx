@@ -19,7 +19,7 @@ const COLOR_NAMES = [
   "--mb-color-bg-black",
   "--mb-color-bg-dark",
   "--mb-color-bg-medium",
-  "--mb-color-bg-light",
+  "--mb-color-background-secondary",
   "--mb-color-bg-white",
   "--mb-color-bg-error",
   "--mb-color-background-error",

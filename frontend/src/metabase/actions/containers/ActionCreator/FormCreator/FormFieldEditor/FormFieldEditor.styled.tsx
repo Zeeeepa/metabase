@@ -56,8 +56,8 @@ export const Subtitle = styled.div`
 `;
 
 export const PreviewContainer = styled(ContentContainer)`
-  background-color: var(--mb-color-bg-light);
-  border-top: 1px solid ${() => darken("bg-light", 0.1)};
+  background-color: var(--mb-color-background-secondary);
+  border-top: 1px solid ${() => darken("background-secondary", 0.1)};
   padding: 1rem 1rem 2rem 1rem;
 
   ${FormField.Root} {

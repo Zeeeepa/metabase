@@ -66,7 +66,7 @@ export const InputField = styled.input<InputProps>`
   background-color: ${(props) =>
     props.readOnly
       ? "var(--mb-color-background-disabled)"
-      : "var(--mb-color-background)"};
+      : "var(--mb-colorbackground-primary)"};
   outline: none;
   text-align: inherit;
 
@@ -78,7 +78,7 @@ export const InputField = styled.input<InputProps>`
 
   &:disabled {
     cursor: default;
-    background-color: var(--mb-color-bg-light);
+    background-color: var(--mb-color-background-secondary);
   }
 
   ${(props) => focusOutlineStyle(props.colorScheme)};

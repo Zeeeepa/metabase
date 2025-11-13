@@ -162,7 +162,7 @@ const LinkToDocsOnReferencingSavedQuestionsInQueries = () => {
     <Box
       p="md"
       ta="center"
-      bg={"bg-light"}
+      bg={"background-secondary"}
       style={{
         borderTop: "1px solid var(--mb-color-border)",
       }}

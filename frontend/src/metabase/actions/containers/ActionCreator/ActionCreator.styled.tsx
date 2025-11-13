@@ -19,7 +19,7 @@ export const ActionCreatorBodyContainer = styled.div`
 export const EditorContainer = styled.div`
   flex: 1 1 0;
   overflow-y: auto;
-  background-color: var(--mb-color-bg-light);
+  background-color: var(--mb-color-background-secondary);
 
   .ace_editor {
     margin-left: var(--mantine-spacing-md);

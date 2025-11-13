@@ -31,7 +31,7 @@ const PreviewAreaBlock = styled.div`
   justify-content: stretch;
   gap: 1rem;
   padding: 1rem 1.5rem 2rem 1rem;
-  background-color: var(--mb-color-bg-light);
+  background-color: var(--mb-color-background-secondary);
 `;
 
 export const SettingsTabLayout = ({

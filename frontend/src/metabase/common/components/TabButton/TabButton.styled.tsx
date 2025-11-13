@@ -133,6 +133,6 @@ export const MenuItem = styled.li`
   &:focus,
   :hover {
     color: var(--mb-color-brand);
-    background-color: var(--mb-color-bg-light);
+    background-color: var(--mb-color-background-secondary);
   }
 `;

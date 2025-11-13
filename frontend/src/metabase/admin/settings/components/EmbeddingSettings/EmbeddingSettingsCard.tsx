@@ -67,7 +67,7 @@ export function EmbeddingSettingsCard({
           <Alert
             data-testid="sdk-settings-alert-info"
             mt="md"
-            bg="bg-light"
+            bg="background-secondary"
             bd="1px solid var(--mb-color-border)"
           >
             <Flex gap="sm">

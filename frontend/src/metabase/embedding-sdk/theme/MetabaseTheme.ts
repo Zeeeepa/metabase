@@ -65,7 +65,7 @@ export interface MetabaseColors {
   "background-disabled"?: string;
 
   /** Light background color used for some controls like a radiogroup. */
-  "background-light"?: string;
+  "background-secondary"?: string;
 
   /** Color used for borders */
   border?: string;

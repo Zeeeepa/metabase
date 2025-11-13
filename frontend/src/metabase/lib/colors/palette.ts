@@ -13,7 +13,7 @@ export const aliases: Record<string, (palette: ColorPalette) => string> = {
   dashboard: (palette) => color("brand", palette),
   document: (palette) => color("brand", palette),
   nav: (palette) => color("bg-white", palette),
-  content: (palette) => color("bg-light", palette),
+  content: (palette) => color("background-secondary", palette),
   database: (palette) => color("accent2", palette),
   pulse: (palette) => color("accent4", palette),
   "text-primary": (palette) => color("text-primary", palette),
@@ -72,7 +72,7 @@ export function color(color: any, palette: ColorPalette = colors) {
 
 /**
  * @deprecated use the color-mix method with CSS variables instead
- * where possible, i.e. `color-mix(in srgb, var(--mb-color-bg-light), transparent 10%)`
+ * where possible, i.e. `color-mix(in srgb, var(--mb-color-background-secondary), transparent 10%)`
  *
  * When the hex values are needed, use the themeColor function
  * from Mantine's theme, i.e. `alpha(theme.fn.themeColor("text-disabled"), 0.1)`

@@ -163,7 +163,7 @@ export const QuestionDownloadWidget = ({
       {showPivotXlsxExportHint && (
         <Flex
           p="md"
-          bg="var(--mb-color-background-light)"
+          bg="var(--mb-color-background-secondary)"
           align="center"
           justify="space-between"
           className={CS.rounded}

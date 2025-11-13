@@ -17,7 +17,7 @@ export const Example = ({ columnsAndSeparators }: Props) => {
       <Text color="text-secondary" lh={1} fw="bold">{t`Example`}</Text>
 
       <Card
-        bg="bg-light"
+        bg="background-secondary"
         component={ScrollArea}
         p="sm"
         radius="xs"

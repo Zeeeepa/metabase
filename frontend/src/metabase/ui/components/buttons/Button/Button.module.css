@@ -46,7 +46,7 @@
   &[data-variant="default"] {
     color: var(--mb-color-text-primary);
     border-color: var(--mb-color-border);
-    background-color: var(--mb-color-background);
+    background-color: var(--mb-colorbackground-primary);
 
     &[aria-pressed="true"],
     &:hover {

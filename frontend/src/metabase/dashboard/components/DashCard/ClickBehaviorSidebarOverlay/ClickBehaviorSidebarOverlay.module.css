@@ -18,7 +18,7 @@
 .Button {
   border-radius: 8px;
   cursor: pointer;
-  background-color: var(--mb-color-bg-light);
+  background-color: var(--mb-color-background-secondary);
   color: var(--mb-color-text-secondary);
 
   &.isActive {

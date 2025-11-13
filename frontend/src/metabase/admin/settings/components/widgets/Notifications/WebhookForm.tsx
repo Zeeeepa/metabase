@@ -227,7 +227,7 @@ export const WebhookForm = ({
           <Alert
             variant="light"
             mb="1.5rem"
-            style={{ backgroundColor: "var(--mb-color-bg-light)" }}
+            style={{ backgroundColor: "var(--mb-color-background-secondary)" }}
             px="1.5rem"
             py="1rem"
             radius="0.5rem"
@@ -264,7 +264,7 @@ export const WebhookForm = ({
                 <Box
                   py="0.5rem"
                   px="1.5rem"
-                  bg="bg-light"
+                  bg="background-secondary"
                   style={{ borderRadius: "0.5rem" }}
                   data-testid="notification-test-response"
                 >

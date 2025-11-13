@@ -4,7 +4,7 @@
   outline-offset: -2px;
   border-color: transparent;
   box-sizing: border-box;
-  background-color: var(--mb-color-background);
+  background-color: var(--mb-colorbackground-primary);
   border-radius: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -53,9 +53,9 @@
 .updatingCell {
   background: linear-gradient(
     110deg,
-    var(--mb-color-bg-light) 8%,
+    var(--mb-color-background-secondary) 8%,
     var(--mb-color-bg-white) 18%,
-    var(--mb-color-bg-light) 33%
+    var(--mb-color-background-secondary) 33%
   );
   background-size: 200% 100%;
   animation: 1s shine linear infinite;

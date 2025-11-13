@@ -13,7 +13,7 @@
     }
 
     .thumb {
-      background-color: var(--mb-color-bg-light);
+      background-color: var(--mb-color-background-secondary);
     }
   }
 
@@ -99,7 +99,7 @@
   border-radius: 1.375rem;
 
   input:disabled + * > & {
-    background-color: var(--mb-color-bg-light);
+    background-color: var(--mb-color-background-secondary);
   }
 
   &::before {

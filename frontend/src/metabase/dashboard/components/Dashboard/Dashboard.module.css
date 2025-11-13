@@ -27,7 +27,7 @@
   }
 
   &:not(.isEmbeddingSdk) {
-    background-color: var(--mb-color-background);
+    background-color: var(--mb-colorbackground-primary);
   }
 
   &.isFullscreen {

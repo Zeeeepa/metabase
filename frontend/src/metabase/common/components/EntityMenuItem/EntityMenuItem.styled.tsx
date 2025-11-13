@@ -30,7 +30,7 @@ export const MenuItemContent = styled.div<MenuItemProps>`
     background-color: ${(props) =>
       !props.disabled && props.hoverBgColor
         ? color(props.hoverBgColor)
-        : "var(--mb-color-bg-light)"};
+        : "var(--mb-color-background-secondary)"};
   }
 
   > .Icon {

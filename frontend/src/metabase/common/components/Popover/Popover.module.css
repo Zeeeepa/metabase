@@ -17,7 +17,7 @@
 .PopoverBody.PopoverBodyWithBackground {
   border: 1px solid var(--mb-color-border);
   box-shadow: 0 4px 10px var(--mb-color-shadow);
-  background-color: var(--mb-color-background);
+  background-color: var(--mb-colorbackground-primary);
   border-radius: 6px;
   overflow: auto;
 }
@@ -35,7 +35,7 @@
 :global(.tippy-box[data-theme~="tooltip"]) {
   color: var(--mb-color-tooltip-text);
   font-weight: bold;
-  background-color: var(--mb-color-tooltip-background);
+  background-color: var(--mb-color-tooltipbackground-primary);
   border: none;
   pointer-events: none;
   line-height: 1.26;
@@ -57,7 +57,7 @@
   font-size: inherit;
   border: 1px solid var(--mb-color-border);
   box-shadow: 0 4px 10px var(--mb-color-shadow);
-  background-color: var(--mb-color-background);
+  background-color: var(--mb-colorbackground-primary);
   border-radius: 6px;
   overflow: auto;
 }

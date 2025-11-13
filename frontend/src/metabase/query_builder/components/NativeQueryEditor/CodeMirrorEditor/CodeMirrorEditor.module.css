@@ -11,12 +11,12 @@
   flex-shrink: 1;
   height: 100%;
   color: var(--mb-color-text-primary);
-  background-color: var(--mb-color-bg-light);
+  background-color: var(--mb-color-background-secondary);
 
   :global {
     /* merge view styles */
     .cm-collapsedLines {
-      background: var(--mb-color-bg-light) !important;
+      background: var(--mb-color-background-secondary) !important;
       color: var(--mb-color-text-disabled);
 
       &:before,

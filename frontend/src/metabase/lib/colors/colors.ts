@@ -290,8 +290,7 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.orion[80],
     dark: baseColors.orion[20],
   },
-  "background-light": {
-    //should be background-secondary
+  "background-secondary": {
     light: baseColors.orion[5],
     dark: baseColors.orion[110],
   },
@@ -299,7 +298,10 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.brand[50],
     dark: baseColors.brand[40],
   },
-  background: { light: baseColors.white, dark: baseColors.orion[100] }, //should be background-primary
+  "background-primary": {
+    light: baseColors.white,
+    dark: baseColors.orion[100],
+  }, //should be background-primary
   "bg-black-alpha-60": {
     //should be called overlay? this label is not semantic
     light: baseColors.orionAlpha[60],
@@ -313,7 +315,6 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.lobster[10],
     dark: baseColors.lobster[90],
   },
-  "bg-light": { light: baseColors.orion[5], dark: baseColors.orion[110] }, //should be background-secondary
   "bg-medium": { light: baseColors.orion[10], dark: baseColors.orion[80] }, //should be background-tertiary
   "bg-night": { light: baseColors.orion[70], dark: baseColors.orion[30] }, //merge with background-secondary-inverse?
   "bg-white-alpha-15": {

@@ -21,7 +21,7 @@ const colorsByVariant = {
     warning: color("warning"),
   },
   background: {
-    info: "var(--mb-color-bg-light)",
+    info: "var(--mb-color-background-secondary)",
     error: color("background-error"),
     warning: lighten("warning", 0.5),
   },

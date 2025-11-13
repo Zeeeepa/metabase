@@ -35,7 +35,7 @@ export const DEFAULT_METABASE_COMPONENT_THEME: MetabaseComponentTheme = {
     breadcrumbs: {
       expandButton: {
         textColor: "var(--mb-color-text-secondary)",
-        backgroundColor: "var(--mb-color-bg-light)",
+        backgroundColor: "var(--mb-color-background-secondary)",
         hoverTextColor: "var(--mb-color-text-primary-inverse)",
         hoverBackgroundColor: "var(--mb-color-brand)",
       },
