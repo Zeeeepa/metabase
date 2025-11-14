@@ -11,15 +11,40 @@ const RATIOS = [
   1.05, 1.1, 1.34, 1.94, 2.86, 3.56, 5.09, 7.86, 11.56, 15.33, 18.16, 19.44,
 ];
 
-const gray = new BackgroundColor({
-  name: "Gray",
-  colorKeys: ["#000"],
-  ratios: RATIOS,
-  colorspace: "RGB",
-  smooth: false,
-});
+type ColorMap = {
+  110?: CssColor;
+  100: CssColor;
+  90: CssColor;
+  80: CssColor;
+  70: CssColor;
+  60: CssColor;
+  50: CssColor;
+  40: CssColor;
+  30: CssColor;
+  20: CssColor;
+  10: CssColor;
+  5: CssColor;
+};
 
-export const generateSteps = (color: CssColor, name: string) => {
+type MapWithSuffixes<T extends string, N extends string> = {
+  [K in `${T}${N}`]: ColorMap;
+};
+
+export const generateSteps = <const T extends string>(
+  color: CssColor,
+  backgroundColor: CssColor,
+  name: T,
+): MapWithSuffixes<T, "" | "Alpha" | "AlphaInverse"> => {
+  console.log({ color, backgroundColor });
+
+  const background = new BackgroundColor({
+    name: "background",
+    colorKeys: [backgroundColor],
+    ratios: RATIOS,
+    colorspace: "HSL",
+    smooth: false,
+  });
+
   const input = new Color({
     name,
     colorKeys: [color],
@@ -28,10 +53,12 @@ export const generateSteps = (color: CssColor, name: string) => {
     smooth: false,
   });
 
+  console.log({ lightness: C(backgroundColor).lightness() });
+
   const theme = new Theme({
     colors: [input],
-    backgroundColor: gray,
-    lightness: 100,
+    backgroundColor: background,
+    lightness: C(backgroundColor).lightness(),
     contrast: 1,
     saturation: 100,
     output: "HSL",
