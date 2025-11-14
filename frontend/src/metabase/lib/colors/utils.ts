@@ -74,7 +74,7 @@ export const generateSteps = <const T extends string>(
     80: contrastColorValues[8],
     70: contrastColorValues[7],
     60: contrastColorValues[6],
-    50: contrastColorValues[0],
+    50: contrastColorValues[5],
     40: contrastColorValues[4],
     30: contrastColorValues[3],
     20: contrastColorValues[2],
