@@ -57,7 +57,6 @@ export const SDK_TO_MAIN_APP_COLORS_MAPPING: Record<
   "background-hover": ["background-secondary", "background-hover"],
   "background-secondary": ["background-tertiary", "background-secondary"],
   "background-disabled": ["background-disabled"],
-  "background-secondary": ["background-secondary"],
   shadow: ["shadow"],
   positive: ["success"],
   negative: ["danger"],
