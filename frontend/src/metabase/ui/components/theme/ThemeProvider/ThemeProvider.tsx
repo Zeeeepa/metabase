@@ -16,7 +16,11 @@ import {
 } from "metabase/embedding/config";
 import { isEmbeddingSdk } from "metabase/embedding-sdk/config";
 import { parseHashOptions } from "metabase/lib/browser";
-import { mutateColors } from "metabase/lib/colors";
+import {
+  getDarkColorPalette,
+  getLightColorPalette,
+  mutateColors,
+} from "metabase/lib/colors";
 import type { MetabaseThemeV2 } from "metabase/lib/colors/types";
 import type { DisplayTheme } from "metabase/public/lib/types";
 
@@ -30,7 +34,7 @@ import { useDerivedMantineTheme } from "./useDerivedMantineTheme";
 interface ThemeProviderProps {
   children: ReactNode;
 
-  /** Theme object. Used for both main app and embedding. */
+  /** Theme configuration. If not passed, it uses the default theme based on your color scheme. */
   theme?: MetabaseThemeV2;
 
   /**
@@ -47,14 +51,17 @@ const ThemeProviderInner = (props: ThemeProviderProps) => {
   const { resolvedColorScheme } = useColorScheme();
   const [themeCacheBuster, setThemeCacheBuster] = useState(1);
 
-  // Derive Mantine theme overrides from MetabaseThemeV2 or legacy themeOverride
+  const sourceTheme: MetabaseThemeV2 = useMemo(() => {
+    return props.theme ?? getDefaultMetabaseTheme(resolvedColorScheme);
+  }, [props.theme, resolvedColorScheme]);
+
   const theme = useDerivedMantineTheme({
     resolvedColorScheme,
-    theme: props.theme,
+    theme: sourceTheme,
     themeOverride: props.themeOverride,
   });
 
-  const mantineTheme = useMemo(() => {
+  const themeWithColorFn = useMemo(() => {
     return {
       ...theme,
       other: {
@@ -106,7 +113,7 @@ const ThemeProviderInner = (props: ThemeProviderProps) => {
 
   return (
     <MantineProvider
-      theme={mantineTheme}
+      theme={themeWithColorFn}
       forceColorScheme={resolvedColorScheme}
       getStyleNonce={() => window.MetabaseNonce ?? "metabase"}
       classNamesPrefix="mb-mantine"
@@ -115,7 +122,7 @@ const ThemeProviderInner = (props: ThemeProviderProps) => {
       withCssVariables={withCssVariables}
       withGlobalClasses={withGlobalClasses}
     >
-      <_CompatibilityEmotionThemeProvider theme={mantineTheme}>
+      <_CompatibilityEmotionThemeProvider theme={themeWithColorFn}>
         <DatesProvider>{props.children}</DatesProvider>
       </_CompatibilityEmotionThemeProvider>
     </MantineProvider>
@@ -173,3 +180,8 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     </ColorSchemeProvider>
   );
 };
+
+export const getDefaultMetabaseTheme = (scheme: ResolvedColorScheme) => ({
+  version: 2 as const,
+  colors: scheme === "dark" ? getDarkColorPalette() : getLightColorPalette(),
+});

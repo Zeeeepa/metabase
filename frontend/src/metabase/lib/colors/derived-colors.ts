@@ -1,9 +1,9 @@
 /* eslint-disable no-color-literals */
 
-import { getLightTheme } from "./colors";
+import { getLightColorPalette } from "./colors";
 import type { ColorPalette, MetabaseColorsV2 } from "./types";
 
-const defaultLightTheme = getLightTheme();
+const defaultLightTheme = getLightColorPalette();
 
 /**
  * Generates a complete palette from three main colors.

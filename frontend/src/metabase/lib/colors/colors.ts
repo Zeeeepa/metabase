@@ -246,7 +246,7 @@ const baseColors = {
  * Returns the default light theme color palette.
  * This includes all semantic colors with their light mode values.
  */
-export const getLightTheme = (): ColorPalette => ({
+export const getLightColorPalette = (): ColorPalette => ({
   // Core customizable colors
   brand: baseColors.blue[40],
   "background-primary": baseColors.white,
@@ -255,7 +255,7 @@ export const getLightTheme = (): ColorPalette => ({
   "text-tertiary": baseColors.orionAlpha[40],
   "text-primary-inverse": baseColors.orionAlphaInverse[80],
   "background-secondary": baseColors.orion[5],
-  shadow: baseColors.orionAlpha[20],
+  // shadow: baseColors.orionAlpha[20],
   border: baseColors.orion[20],
   filter: baseColors.octopus[50],
   summarize: baseColors.palm[50],
@@ -338,7 +338,7 @@ export const getLightTheme = (): ColorPalette => ({
  * Returns the default dark theme color palette.
  * This includes all semantic colors with their dark mode values.
  */
-export const getDarkTheme = (): ColorPalette => ({
+export const getDarkColorPalette = (): ColorPalette => ({
   // Core customizable colors
   brand: baseColors.blue[40],
   "background-primary": baseColors.orion[100],
@@ -347,7 +347,7 @@ export const getDarkTheme = (): ColorPalette => ({
   "text-tertiary": baseColors.orionAlphaInverse[40],
   "text-primary-inverse": baseColors.orionAlpha[80],
   "background-secondary": baseColors.orion[110],
-  shadow: `color-mix(in srgb, ${baseColors.orion[110]} 20%, transparent)`,
+  // shadow: `color-mix(in srgb, ${baseColors.orion[110]} 20%, transparent)`,
   border: baseColors.orionAlphaInverse[20],
   filter: baseColors.octopus[40],
   summarize: baseColors.palm[40],
@@ -427,7 +427,7 @@ export const getDarkTheme = (): ColorPalette => ({
 });
 
 export const getColors = (settings?: ColorSettings) => {
-  const lightTheme = getLightTheme();
+  const lightTheme = getLightColorPalette();
 
   return {
     ...lightTheme,

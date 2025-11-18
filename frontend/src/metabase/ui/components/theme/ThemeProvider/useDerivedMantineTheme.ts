@@ -40,14 +40,12 @@ export function useDerivedMantineTheme(
   const { theme, resolvedColorScheme, themeOverride } = options;
 
   const colorPalette = useMemo(() => {
-    if (!theme) {
-      return null;
-    }
-
-    const palette: ColorPalette = { ...deriveColorPalette(theme.colors) };
+    const palette: ColorPalette = {
+      ...deriveColorPalette(theme?.colors ?? {}),
+    };
 
     // Populate accent0 - accent7 with chart colors.
-    (theme.chartColors ?? DEFAULT_CHART_COLORS).forEach((color, index) => {
+    (theme?.chartColors ?? DEFAULT_CHART_COLORS).forEach((color, index) => {
       palette[`accent${index}` as keyof ColorPalette] = color;
     });
 
