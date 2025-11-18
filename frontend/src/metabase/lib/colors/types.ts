@@ -149,13 +149,13 @@ export interface AccentColorOptions {
  * Version 2 of the theme object supports both embedding and internal use.
  */
 export interface MetabaseThemeV2 {
-  /** Theme version identifier. Should be 2. */
+  /** Theme version should be 2. */
   version: 2;
 
-  /** Color palette - all fields are optional */
+  /** Color palette. */
   colors?: Partial<MetabaseColorsV2>;
 
-  /** 8 chart colors */
+  /** 8 chart colors. */
   chartColors?: string[];
 
   /** Custom font family. Currently used for React SDK. */
