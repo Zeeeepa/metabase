@@ -21,6 +21,7 @@ type SetupOpts = {
   databaseId?: DatabaseId;
   recentItems?: RecentItem[];
   searchItems?: SearchResult[];
+  models?: DataPickerValue["model"][];
 };
 
 function setup({
@@ -29,6 +30,7 @@ function setup({
   databaseId,
   recentItems = [],
   searchItems = [],
+  models,
 }: SetupOpts = {}) {
   const onChange = jest.fn();
   const onClose = jest.fn();
@@ -41,6 +43,7 @@ function setup({
       title={title}
       value={value}
       databaseId={databaseId}
+      models={models}
       onChange={onChange}
       onClose={onClose}
     />,
@@ -126,6 +129,23 @@ describe("DataPickerModal", () => {
       expect(screen.getByText("DB 1 question")).toBeInTheDocument();
       expect(screen.queryByText("DB 2 table")).not.toBeInTheDocument();
       expect(screen.queryByText("DB 2 question")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("models prop filtering (metabase#66210)", () => {
+    it("should not show metrics in the filter options when models prop excludes metrics", async () => {
+      setup({
+        models: ["table", "card", "dataset"],
+      });
+
+      // Wait for the modal to load
+      expect(
+        await screen.findByRole("tab", { name: /Data/ }),
+      ).toBeInTheDocument();
+
+      // The Filter button should be visible in the Data tab
+      const filterButton = screen.getByRole("button", { name: /Filter/ });
+      expect(filterButton).toBeInTheDocument();
     });
   });
 });

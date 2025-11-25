@@ -54,7 +54,7 @@ interface Props {
 
 type FilterOption = { label: string; value: QuestionPickerModel };
 
-const QUESTION_PICKER_MODELS: QuestionPickerModel[] = [
+const DEFAULT_QUESTION_PICKER_MODELS: QuestionPickerModel[] = [
   "card",
   "dataset",
   "metric",
@@ -88,9 +88,18 @@ export const DataPickerModal = ({
     ...OPTIONS,
     ...options,
   };
-  const [modelFilter, setModelFilter] = useState<QuestionPickerModel[]>(
-    QUESTION_PICKER_MODELS,
-  );
+  // Filter picker models based on the models prop
+  const questionPickerModels = useMemo(() => {
+    if (!models) {
+      return DEFAULT_QUESTION_PICKER_MODELS;
+    }
+    return DEFAULT_QUESTION_PICKER_MODELS.filter(
+      model => model === "dashboard" || models.includes(model),
+    );
+  }, [models]);
+
+  const [modelFilter, setModelFilter] =
+    useState<QuestionPickerModel[]>(questionPickerModels);
   const hasNestedQueriesEnabled = useSetting("enable-nested-queries");
 
   const {
@@ -130,8 +139,13 @@ export const DataPickerModal = ({
         value: "table" as const,
       });
     }
-    return filterOptions;
-  }, [hasQuestions, hasModels, hasMetrics, hasTables]);
+
+    if (!models) {
+      return filterOptions;
+    }
+
+    return filterOptions.filter(option => models.includes(option.value));
+  }, [hasQuestions, hasModels, hasMetrics, hasTables, models]);
 
   const { tryLogRecentItem } = useLogRecentItem();
 
@@ -217,19 +231,16 @@ export const DataPickerModal = ({
       computedTabs.push({
         id: "questions-tab",
         displayName: t`Data`,
-        models: [
-          "card" as const,
-          "dataset" as const,
-          "metric" as const,
-          "table" as const,
-        ],
+        models: questionPickerModels.filter(
+          (m): m is "card" | "dataset" | "metric" | "table" => m !== "dashboard",
+        ),
         folderModels: ["collection", "dashboard", "schema", "database"],
         icon: "folder",
         extraButtons: [filterButton],
         render: ({ onItemSelect }) => (
           <QuestionPicker
             initialValue={value}
-            models={QUESTION_PICKER_MODELS}
+            models={questionPickerModels}
             options={options}
             path={questionsPath}
             shouldShowItem={shouldShowItem}
