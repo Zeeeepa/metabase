@@ -1,5 +1,4 @@
 import { useDisclosure } from "@mantine/hooks";
-import cx from "classnames";
 import { t } from "ttag";
 
 import { GroupSummary } from "metabase/admin/people/components/GroupSummary";
@@ -8,7 +7,6 @@ import type {
   UserGroupType,
   UserGroupsType,
 } from "metabase/admin/types";
-import CS from "metabase/css/core/index.css";
 import {
   canEditMembership,
   getGroupColor,
@@ -16,7 +14,7 @@ import {
   isAdminGroup,
   isDefaultGroup,
 } from "metabase/lib/groups";
-import { Box, Checkbox, Icon, Popover, Stack, Text } from "metabase/ui";
+import { Box, Checkbox, Flex, Icon, Popover, Stack, Text } from "metabase/ui";
 
 type GroupSelectProps = {
   groups: UserGroupsType;
@@ -74,17 +72,14 @@ export const GroupSelect = ({
     (isAdminGroup(group) && isCurrentUser) || !canEditMembership(group);
 
   const triggerElement = (
-    <Box
-      onClick={toggle}
-      className={cx(CS.flex, CS.alignCenter, CS.cursorPointer)}
-    >
+    <Flex onClick={toggle} align="center" style={{ cursor: "pointer" }}>
       <GroupSummary
         mr="0.5rem"
         groups={groups}
         selectedGroupIds={selectedGroupIds}
       />
-      <Icon className={CS.textLight} name="chevrondown" size={10} />
-    </Box>
+      <Icon c="text-light" name="chevrondown" size={10} />
+    </Flex>
   );
 
   if (groups.length === 0) {

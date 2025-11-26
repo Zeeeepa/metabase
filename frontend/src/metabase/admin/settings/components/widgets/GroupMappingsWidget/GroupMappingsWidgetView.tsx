@@ -24,7 +24,7 @@ const helpText = (mappingSetting: string) => {
 
 const noMappingText = (mappingSetting: string, syncSwitchValue: boolean) => {
   if (!syncSwitchValue) {
-    return `No mappings yet, group sync is not on`;
+    return t`No mappings yet, group sync is not on`;
   }
   if (mappingSetting === "jwt-group-mappings") {
     return t`No mappings yet, groups will be automatically assgined by exactly matching names`;
@@ -115,7 +115,7 @@ export function GroupMappingsWidgetView({
     onSuccess,
   }: {
     name: string;
-    onSuccess?: () => Promise<void>;
+    onSuccess?: () => void;
   }) => {
     const mappingsMinusDeletedMapping = _.omit(mappings, name);
 
