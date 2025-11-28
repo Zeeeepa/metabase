@@ -8,11 +8,14 @@
    [metabase.models.interface :as mi]
    [metabase.parameters.field :as parameters.field]
    [metabase.query-processor :as qp]
+   [metabase.query-processor.pipeline :as qp.pipeline]
    [metabase.request.core :as request]
+   [metabase.server.streaming-response :as streaming-response]
    [metabase.sync.core :as sync]
    [metabase.types.core :as types]
    [metabase.util :as u]
    [metabase.util.i18n :as i18n]
+   [metabase.util.json :as json]
    [metabase.util.log :as log]
    [metabase.util.malli.schema :as ms]
    [metabase.util.quick-task :as quick-task]
@@ -24,6 +27,8 @@
    [metabase.xrays.core :as xrays]
    [toucan2.core :as t2])
   (:import
+   (java.io BufferedWriter OutputStreamWriter)
+   (java.nio.charset StandardCharsets)
    (java.text NumberFormat)))
 
 (set! *warn-on-reflection* true)
@@ -234,7 +239,14 @@
   [{:keys [id]} :- [:map
                     [:id ms/PositiveInt]]]
   (let [field (api/read-check (t2/select-one :model/Field :id id))]
-    (parameters.field/field->values field)))
+    ;; Use a streaming response so we can detect client disconnects and cancel the underlying database query.
+    ;; This is important for large tables where the SELECT DISTINCT query could run for a long time.
+    ;; See https://github.com/metabase/metabase/issues/66342
+    (streaming-response/streaming-response {:content-type "application/json; charset=utf-8"} [os canceled-chan]
+      (binding [qp.pipeline/*canceled-chan* canceled-chan]
+        (let [result (parameters.field/field->values field)]
+          (with-open [writer (BufferedWriter. (OutputStreamWriter. os StandardCharsets/UTF_8))]
+            (json/encode-to result writer {})))))))
 
 (defn- validate-human-readable-pairs
   "Human readable values are optional, but if present they must be present for each field value. Throws if invalid,
