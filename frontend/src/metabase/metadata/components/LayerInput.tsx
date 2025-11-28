@@ -1,7 +1,6 @@
 import type { FocusEvent } from "react";
 import { t } from "ttag";
 
-import { dataLayerColors } from "metabase/lib/colors";
 import { Group, Icon, Select, SelectItem, type SelectProps } from "metabase/ui";
 import type { TableDataLayer } from "metabase-types/api";
 
@@ -48,15 +47,13 @@ export const LayerInput = ({
         return (
           <SelectItem selected={selected}>
             <Group align="center" gap="sm" justify="center">
-              <Icon c={getColor(item.option.value)} name="eye_filled" />
+              <VisibilityIcon value={item.option.value} />
               <span>{item.option.label}</span>
             </Group>
           </SelectItem>
         );
       }}
-      leftSection={
-        value ? <Icon c={getColor(value)} name="eye_filled" /> : undefined
-      }
+      leftSection={value ? <VisibilityIcon value={value} /> : undefined}
       placeholder={t`Select visibility type`}
       value={value}
       onChange={(value) => onChange(value)}
@@ -70,9 +67,20 @@ function isDataLayer(value: string): value is TableDataLayer {
   return dataLayers.some((layer) => layer === value);
 }
 
-function getColor(value: TableDataLayer | string): string {
-  if (isDataLayer(value)) {
-    return dataLayerColors[value];
+function VisibilityIcon({ value }: { value: string | null }): React.ReactNode {
+  if (value == null) {
+    return null;
   }
-  return dataLayerColors.default;
+
+  if (isDataLayer(value)) {
+    return <Icon name={VISIBILITY_ICONS[value]} />;
+  }
+
+  return null;
 }
+
+const VISIBILITY_ICONS = {
+  hidden: "eye_filled",
+  internal: "database",
+  published: "published",
+} as const;
