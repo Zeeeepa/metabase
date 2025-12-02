@@ -249,6 +249,7 @@
     "dashboard"
     "pulse"                             ; I think the only kinds of Pulses we still have are Alerts?
     "snippet"
+    "transform"
     "no_models"
     "timeline"})
 
@@ -424,6 +425,18 @@
   [_model collection options]
   (snippets-collection-children-query collection options))
 
+(defenterprise transforms-collection-children-query
+  "Collection children query for transforms on OSS. Returns all transforms regardless of collection, because transform
+  collections are an EE feature."
+  metabase-enterprise.transform-collections.api.transform
+  [_collection _options]
+  {:select [:id :name :entity_id [(h2x/literal "transform") :model]]
+   :from   [[:transform :t]]})
+
+(defmethod collection-children-query :transform
+  [_model collection options]
+  (transforms-collection-children-query collection options))
+
 (defmethod collection-children-query :timeline
   [_ collection {:keys [archived? pinned-state]}]
   {:select [:id :collection_id :name [(h2x/literal "timeline") :model] :description :entity_id :icon]
@@ -441,6 +454,14 @@
             :collection_preview :dataset_query :table_id :query_type :is_upload)))
 
 (defmethod post-process-collection-children :snippet
+  [_ _options _collection rows]
+  (for [row rows]
+    (dissoc row
+            :description :collection_position :display :authority_level
+            :moderated_status :icon :personal_owner_id :collection_preview
+            :dataset_query :table_id :query_type :is_upload)))
+
+(defmethod post-process-collection-children :transform
   [_ _options _collection rows]
   (for [row rows]
     (dissoc row
@@ -640,6 +661,15 @@
    [:= :namespace nil]
    [:not= :namespace (u/qualified-name "snippets")]])
 
+(defenterprise transforms-collection-filter-clause
+  "Clause to filter out transform collections from the collection query on OSS instances, and instances without the
+  transform-collections feature flag. EE implementation returns `nil`, so as to not filter out transform collections."
+  metabase-enterprise.transform-collections.api.transform
+  []
+  [:or
+   [:= :namespace nil]
+   [:not= :namespace (u/qualified-name "transforms")]])
+
 (defn- collection-query
   [collection {:keys [archived? collection-namespace pinned-state collection-type include-library?]}]
   (-> (assoc
@@ -661,7 +691,8 @@
                              collection/library-metrics-collection-type
                              collection/library-models-collection-type]]]])
         (perms/audit-namespace-clause :namespace (u/qualified-name collection-namespace))
-        (snippets-collection-filter-clause))
+        (snippets-collection-filter-clause)
+        (transforms-collection-filter-clause))
        ;; We get from the effective-children-query a normal set of columns selected:
        ;; want to make it fit the others to make UNION ALL work
        :select [:id
@@ -793,6 +824,7 @@
     :document   :model/Document
     :pulse      :model/Pulse
     :snippet    :model/NativeQuerySnippet
+    :transform  :model/Transform
     :timeline   :model/Timeline))
 
 (defn post-process-rows
@@ -857,8 +889,9 @@
                   :metric     4
                   :card       5
                   :snippet    6
-                  :collection 7
-                  :timeline   8}]
+                  :transform  7
+                  :collection 8
+                  :timeline   9}]
     (conj select-clause [[:inline (get rankings model 100)]
                          :model_ranking])))
 
@@ -979,7 +1012,7 @@
   "Fetch a sequence of 'child' objects belonging to a Collection, filtered using `options`."
   [{collection-namespace :namespace, :as collection} :- collection/CollectionWithLocationAndIDOrRoot
    {:keys [models], :as options}                     :- CollectionChildrenOptions]
-  (let [valid-models (for [model-kw (cond-> [:collection :dataset :metric :card :dashboard :pulse :snippet :timeline]
+  (let [valid-models (for [model-kw (cond-> [:collection :dataset :metric :card :dashboard :pulse :snippet :transform :timeline]
                                       (premium-features/enable-documents?) (conj :document))
                            ;; only fetch models that are specified by the `model` param; or everything if it's empty
                            :when    (or (empty? models) (contains? models model-kw))

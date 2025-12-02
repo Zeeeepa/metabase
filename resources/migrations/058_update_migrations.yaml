@@ -815,6 +815,58 @@ databaseChangeLog:
         - sql:
             sql: UPDATE collection SET type = 'remote-synced' WHERE is_remote_synced = true
 
+  - changeSet:
+      id: v58.2025-12-02T10:00:00
+      author: rileythompson
+      comment: Add collection_id column to transform table for folder support
+      changes:
+        - addColumn:
+            tableName: transform
+            columns:
+              - column:
+                  name: collection_id
+                  type: int
+                  remarks: Foreign key to collection table for organizing transforms into folders
+                  constraints:
+                    nullable: true
+      rollback:
+        - dropColumn:
+            tableName: transform
+            columnName: collection_id
+
+  - changeSet:
+      id: v58.2025-12-02T10:00:01
+      author: rileythompson
+      comment: Add index for transform.collection_id
+      changes:
+        - createIndex:
+            tableName: transform
+            indexName: idx_transform_collection_id
+            columns:
+              - column:
+                  name: collection_id
+      rollback:
+        - dropIndex:
+            tableName: transform
+            indexName: idx_transform_collection_id
+
+  - changeSet:
+      id: v58.2025-12-02T10:00:02
+      author: rileythompson
+      comment: Add foreign key transform(collection_id) to collection(id)
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: transform
+            baseColumnNames: collection_id
+            referencedTableName: collection
+            referencedColumnNames: id
+            constraintName: fk_transform_collection_id
+            onDelete: SET NULL
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: transform
+            constraintName: fk_transform_collection_id
+
 
 # >>>>>>>>>> DO NOT ADD NEW MIGRATIONS BELOW THIS LINE! ADD THEM ABOVE <<<<<<<<<<
 

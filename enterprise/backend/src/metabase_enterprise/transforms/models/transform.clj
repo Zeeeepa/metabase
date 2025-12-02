@@ -5,6 +5,7 @@
    [metabase-enterprise.transforms.interface :as transforms.i]
    [metabase-enterprise.transforms.models.transform-run :as transform-run]
    [metabase-enterprise.transforms.util :as transforms.util]
+   [metabase.collections.models.collection :as collection]
    [metabase.events.core :as events]
    [metabase.lib-be.core :as lib-be]
    [metabase.lib.core :as lib]
@@ -29,6 +30,11 @@
   (derive ::mi/read-policy.superuser)
   (derive ::mi/write-policy.superuser))
 
+;; Transforms can only go in Collections with namespace = "transforms"
+(defmethod collection/allowed-namespaces :model/Transform
+  [_]
+  #{:transforms})
+
 (defn- transform-source-out [m]
   (-> m
       mi/json-out-without-keywordization
@@ -49,14 +55,17 @@
    :run_trigger mi/transform-keyword})
 
 (t2/define-before-insert :model/Transform
-  [{:keys [source] :as transform}]
-  (assoc transform :source_type (transforms.util/transform-source-type source)))
+  [{:keys [source collection_id] :as transform}]
+  (u/prog1 (assoc transform :source_type (transforms.util/transform-source-type source))
+    (collection/check-collection-namespace :model/Transform collection_id)))
 
 (t2/define-before-update :model/Transform
-  [{:keys [source] :as transform}]
-  (if source
-    (assoc transform :source_type (transforms.util/transform-source-type source))
-    transform))
+  [{:keys [source collection_id] :as transform}]
+  (u/prog1 (if source
+             (assoc transform :source_type (transforms.util/transform-source-type source))
+             transform)
+    (when (contains? (t2/changes transform) :collection_id)
+      (collection/check-collection-namespace :model/Transform collection_id))))
 
 (t2/define-after-select :model/Transform
   [{:keys [source] :as transform}]
@@ -225,15 +234,18 @@
    :skip [:dependency_analysis_version :source_type]
    :transform {:created_at (serdes/date)
                :creator_id (serdes/fk :model/User)
-               :source     {:export #(update % :query serdes/export-mbql)
-                            :import #(update % :query serdes/import-mbql)}
-               :target     {:export serdes/export-mbql :import serdes/import-mbql}
-               :tags       (serdes/nested :model/TransformTransformTag :transform_id opts)}})
+               :collection_id (serdes/fk :model/Collection)
+               :source {:export #(update % :query serdes/export-mbql)
+                        :import #(update % :query serdes/import-mbql)}
+               :target {:export serdes/export-mbql :import serdes/import-mbql}
+               :tags (serdes/nested :model/TransformTransformTag :transform_id opts)}})
 
 (defmethod serdes/dependencies "Transform"
-  [{:keys [source tags]}]
+  [{:keys [source tags collection_id]}]
   (set
    (concat
+    (when collection_id
+      [[{:model "Collection" :id collection_id}]])
     (for [{tag-id :tag_id} tags]
       [{:model "TransformTag" :id tag-id}])
     (serdes/mbql-deps source))))
@@ -281,4 +293,4 @@
                                   :fields [:source]}}
    :search-terms [:name :description]
    :render-terms {:transform-name :name
-                  :transform-id   :id}})
+                  :transform-id :id}})

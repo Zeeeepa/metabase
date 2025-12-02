@@ -198,6 +198,10 @@
   "Should we enable SQL snippet folders?"
   :snippet-collections)
 
+(define-premium-feature ^{:added "0.58.0"} enable-transform-collections?
+  "Should we enable Transform folders?"
+  :transform-collections)
+
 (define-premium-feature ^{:added "0.45.0"} enable-serialization?
   "Enable the v2 SerDes functionality"
   :serialization)
@@ -362,6 +366,7 @@
    :serialization                  (enable-serialization?)
    :session_timeout_config         (enable-session-timeout-config?)
    :snippet_collections            (enable-snippet-collections?)
+   :transform_collections (enable-transform-collections?)
    :sso_google                     (enable-sso-google?)
    :sso_jwt                        (enable-sso-jwt?)
    :sso_ldap                       (enable-sso-ldap?)
