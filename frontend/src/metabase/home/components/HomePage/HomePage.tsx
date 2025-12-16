@@ -28,7 +28,7 @@ export const HomePage = (): JSX.Element => {
       <Button onClick={open} mt="xl">OmniPicker</Button>
       {isOpen && (
         <EntityPickerModal
-          models={["table", "dashboard", "card", "dataset", "metric", "document"]}
+          models={["collection", "table", "dashboard", "card", "dataset", "metric", "document"]}
           onClose={close}
           // initialValue={{
           //   id: 1671,
@@ -58,6 +58,7 @@ export const HomePage = (): JSX.Element => {
             hasConfirmButtons: true,
             confirmButtonText: t`Yes Please`,
             showRootCollection: true,
+            canCreateCollections: true,
             showPersonalCollections: true,
             showRecents: true,
           }}

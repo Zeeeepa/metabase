@@ -4,7 +4,7 @@ import { Box } from "metabase/ui";
 import type { Table } from "metabase-types/api";
 
 import { ItemList } from "../../EntityPicker";
-import S from "../../EntityPicker/components/NestedItemPicker/NestedItemPicker.module.css";
+import S from "../../EntityPicker/components/NestedItemPicker.module.css";
 
 import type { TableItem } from "./types";
 

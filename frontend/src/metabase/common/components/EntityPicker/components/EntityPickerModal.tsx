@@ -9,84 +9,79 @@ import resizeObserver from "metabase/lib/resize-observer";
 import {
   ActionIcon,
   Box,
-  Flex,
   Icon,
   Modal,
-  Repeat,
-  Skeleton,
   TextInput,
 } from "metabase/ui";
-import type { RecentContexts, SearchResultId } from "metabase-types/api";
+import type { RecentContexts } from "metabase-types/api";
 
+import { useLogRecentItem } from "../hooks";
 import type {
   EntityPickerOptions,
+  EntityPickerProps,
   OmniPickerItem,
   OmniPickerValue,
-  TypeWithModel,
 } from "../types";
+
 
 import S from "./EntitityPickerModal.module.css";
 import { EntityPicker } from "./EntityPicker";
-
-export type EntityPickerModalOptions = {
-  showSearch?: boolean;
-  hasConfirmButtons?: boolean;
-  confirmButtonText?: string | ((model?: string) => string);
-  cancelButtonText?: string;
-  hasRecents?: boolean;
-  showDatabases?: boolean;
-  showLibrary?: boolean;
-  showRootCollection?: boolean;
-};
-
-export const defaultOptions: EntityPickerModalOptions = {
-  showSearch: true,
-  showRecents: true,
-  showConfirmButtons: true,
-  showLibrary: true,
-  showDatabases: true,
-};
 
 export const DEFAULT_RECENTS_CONTEXT: RecentContexts[] = [
   "selections",
   "views",
 ];
 
-export interface EntityPickerModalProps<
-  Id extends SearchResultId,
-  Model extends string,
-  Item extends TypeWithModel<Id, Model>,
-> {
+const defaultOptions: EntityPickerOptions = {
+  hasSearch: true,
+  hasRecents: true,
+  hasDatabases: false,
+  hasLibrary: true,
+  hasRootCollection: true,
+  hasPersonalCollection: true,
+  hasPersonalCollections: true,
+
+  hasConfirmButtons: true,
+  canCreateCollections: false,
+};
+
+export type EntityPickerModalProps = {
   title?: string;
-  models: OmniPickerItem["model"][];
   value?: OmniPickerValue;
-  options?: Partial<EntityPickerOptions>;
-  /**recentsContext: Defaults to returning recents based off both views and selections. Can be overridden by props */
-  recentsContext?: RecentContexts[];
   onClose: () => void;
-  onChange?: (item: Item) => void;
-}
+  recentsContext?: RecentContexts[];
+  disableCloseOnEscape?: boolean;
+} & EntityPickerProps;
 
 export function EntityPickerModal({
   title = t`Choose an item`,
-  models,
-  value: initialValue,
   options,
-  trapFocus = true,
-  recentsContext = DEFAULT_RECENTS_CONTEXT,
+  // recentsContext = DEFAULT_RECENTS_CONTEXT, // TODO: use this
+  disableCloseOnEscape = false,
   onClose,
   onChange,
-}: EntityPickerModalProps<Id, Model, Item>) {
+  ...rest
+}: EntityPickerModalProps) {
   const [modalContentMinWidth, setModalContentMinWidth] = useState(920);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const hydratedOptions = useMemo(
+  const hydratedOptions: EntityPickerOptions = useMemo(
     () => ({ ...defaultOptions, ...options }),
     [options],
   );
 
   const { open } = useModalOpen();
+
+  const { tryLogRecentItem } = useLogRecentItem();
+
+  const handleChange = useCallback(
+    async (item: OmniPickerItem) => {
+      await onChange(item);
+      tryLogRecentItem(item);
+    },
+    [onChange, tryLogRecentItem],
+  );
 
   useWindowEvent(
     "keydown",
@@ -141,7 +136,6 @@ export function EntityPickerModal({
        */
       h="100vh"
       w="100vw"
-      trapFocus={trapFocus}
       closeOnEscape={false} // we're doing this manually in useWindowEvent
       yOffset="10dvh"
     >
@@ -166,7 +160,7 @@ export function EntityPickerModal({
           <Modal.CloseButton size={21} pos="relative" top="1px" />
         </Modal.Header>
         <Modal.Body className={S.modalBody} p="0">
-          {hydratedOptions.showSearch && (
+          {hydratedOptions.hasSearch && (
             <Box px="2.5rem" mb="1.5rem">
               <TextInput
                 classNames={{ input: S.textInput }}
@@ -190,11 +184,10 @@ export function EntityPickerModal({
           <ErrorBoundary>
             <EntityPicker
               searchQuery={searchQuery}
-              models={models}
-              initialValue={initialValue}
-              onChange={onChange}
-              onCancel={onClose}
+              onChange={handleChange}
               options={hydratedOptions}
+              onClose={onClose}
+              {...rest}
             />
           </ErrorBoundary>
         </Modal.Body>
@@ -203,22 +196,3 @@ export function EntityPickerModal({
   );
 }
 
-const EntityPickerLoadingSkeleton = () => (
-  <Box data-testid="loading-indicator" className={S.loadingSkeleton}>
-    <Flex px="2rem" gap="1.5rem" mb="3.5rem">
-      <Repeat times={3}>
-        <Skeleton h="2rem" w="5rem" mb="0.5rem" />
-      </Repeat>
-    </Flex>
-    <Flex px="2rem" mb="2.5rem" direction="column">
-      <Repeat times={2}>
-        <Skeleton h="3rem" mb="0.5rem" />
-      </Repeat>
-    </Flex>
-    <Flex px="2rem" direction="column">
-      <Repeat times={3}>
-        <Skeleton h="3rem" mb="0.5rem" />
-      </Repeat>
-    </Flex>
-  </Box>
-);

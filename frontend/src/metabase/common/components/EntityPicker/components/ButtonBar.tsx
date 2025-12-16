@@ -5,9 +5,17 @@ import { getErrorMessage } from "metabase/api/utils";
 import { Button, Flex, Text } from "metabase/ui";
 
 import { useOmniPickerContext } from "../context";
-import type { OmniPickerItem } from "../types";
+import type { EntityPickerProps, EntityPickerOptions } from "../types";
 
 import { NewCollectionDialog } from "./NewCollectionDialog";
+
+export type ButtonBarProps = {
+  onConfirm: EntityPickerProps["onChange"];
+  onCancel: () => void;
+  actionButtons?: EntityPickerOptions["actionButtons"];
+  confirmButtonText?: EntityPickerOptions["confirmButtonText"];
+  cancelButtonText?: EntityPickerOptions["cancelButtonText"];
+};
 
 export const ButtonBar = ({
   onConfirm,
@@ -15,13 +23,7 @@ export const ButtonBar = ({
   actionButtons,
   confirmButtonText,
   cancelButtonText,
-}: {
-  onConfirm: (item: OmniPickerItem) => void;
-  onCancel?: () => void;
-  actionButtons: JSX.Element[];
-  confirmButtonText?: string;
-  cancelButtonText?: string;
-}) => {
+}: ButtonBarProps) => {
   const { path, isSelectableItem } = useOmniPickerContext();
   const [error, setError] = useState<string | null>(null);
 

@@ -9,7 +9,6 @@ import { SearchResults } from "./SearchResults";
 export const SearchResultsItemList = () => {
   const { models, searchQuery, isHiddenItem, searchScope } =
     useOmniPickerContext();
-  const [debouncedQuery] = useDebouncedValue(searchQuery, 500);
 
   const { searchCollection, searchModels } = useMemo(() => {
     if (searchScope === "databases") {
@@ -25,17 +24,20 @@ export const SearchResultsItemList = () => {
     };
   }, [searchScope, models]);
 
+  // FIXME, debouncing object doesn't work
+  const [debouncedQuery] = useDebouncedValue({
+    q: searchQuery,
+    collection: searchCollection === null ? "root" : searchCollection,
+    models: searchModels,
+  }, 500);
+
   const {
     data: results,
     error,
     isLoading,
   } = useSearchQuery(
-    {
-      q: debouncedQuery,
-      collection: searchCollection,
-      models: searchModels,
-    },
-    { skip: !debouncedQuery },
+    debouncedQuery,
+    { skip: !debouncedQuery.q },
   );
 
   const filteredResults =
@@ -50,6 +52,7 @@ export const SearchResultsItemList = () => {
       searchResults={filteredResults}
       isLoading={isLoading}
       error={error}
+      mode="search"
     />
   );
 };

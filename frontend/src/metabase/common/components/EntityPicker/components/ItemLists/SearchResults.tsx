@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { t } from "ttag";
 import _ from "underscore";
 
@@ -24,15 +24,18 @@ import type { RecentItem, SearchResult } from "metabase-types/api";
 import type { OmniPickerCollectionItem } from "../..";
 import { useOmniPickerContext } from "../../context";
 import { getEntityPickerIcon, isSelectedItem } from "../../utils";
+import { useDeepCompareEffect } from "react-use";
 
 export const SearchResults = ({
   searchResults,
   isLoading,
   error,
+  mode,
 }: {
   searchResults: SearchResult[] | RecentItem[];
   isLoading?: boolean;
   error?: unknown;
+  mode: "search" | "recents";
 }) => {
   const { path, setPath, isDisabledItem, isSelectableItem, options, onChange } =
     useOmniPickerContext();
@@ -50,7 +53,7 @@ export const SearchResults = ({
     <Box h="100%" w="40rem">
       {searchResults.length > 0 ? (
         <Stack h="100%" gap={0}>
-          <SearchScopeSelector />
+          {mode === "search" && <SearchScopeSelector />}
           <VirtualizedList
             Wrapper={({ children, ...props }) => (
               <Box py="md" {...props}>
@@ -224,12 +227,34 @@ function SearchScopeSelector() {
     return null;
   }
 
+  const isValidScope = (lastCollection: OmniPickerCollectionItem) => {
+    if (libraryCollection && (lastCollection.id === libraryCollection.id)) {
+      // don't show library twice
+      return false;
+    }
+
+    if (typeof lastCollection.id === "number") {
+      return true;
+    }
+
+    if (lastCollection.id === "root" || lastCollection.id === null) {
+      // scoped search doesn't work for our analytics
+      return false;
+    }
+
+    if(lastCollection.id === "databases") {
+      return true;
+    }
+
+    return false;
+  }
+
   const options = [
     { label: t`Everywhere`, value: "" },
     libraryCollection?.id
       ? { label: t`Library`, value: String(libraryCollection.id) }
       : null,
-    lastCollection?.id
+    lastCollection && isValidScope(lastCollection)
       ? { label: lastCollection.name, value: String(lastCollection.id) }
       : null,
   ].filter((i) => i !== null);

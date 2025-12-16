@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import type { DatabaseId, SchemaName } from "metabase-types/api";
 
-import { ItemList, ListBox } from "../../EntityPicker";
+import { ItemList } from "../../EntityPicker";
 
 import type { TablePickerFolderItem } from "./types";
 import { getSchemaDisplayName } from "./utils";
@@ -48,7 +48,7 @@ export const SchemaList = ({
   }
 
   return (
-    <ListBox data-testid="item-picker-level-2">
+    <div data-testid="item-picker-level-2">
       <ItemList
         error={error}
         isCurrentLevel={isCurrentLevel}
@@ -58,6 +58,6 @@ export const SchemaList = ({
         selectedItem={selectedItem}
         onClick={onClick}
       />
-    </ListBox>
+    </div>
   );
 };

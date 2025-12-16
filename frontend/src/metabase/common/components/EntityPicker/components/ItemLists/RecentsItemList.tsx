@@ -19,6 +19,7 @@ export const RecentsItemList = () => {
       searchResults={filteredResults}
       isLoading={isLoading}
       error={error}
+      mode="recents"
     />
   );
 };

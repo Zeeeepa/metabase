@@ -3,7 +3,9 @@ import { useMemo } from "react";
 import { useListCollectionsQuery } from "metabase/api";
 import type { Collection } from "metabase-types/api";
 
-import { ItemList, OmniPickerItem } from "../..";
+import type { OmniPickerItem } from "../../types";
+
+import { ItemList } from "./ItemList";
 
 export const PersonalCollectionsItemList = ({
   pathIndex,

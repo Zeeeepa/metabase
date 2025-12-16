@@ -1,131 +1,62 @@
-import type { ReactNode } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
-import type { IconName } from "metabase/ui";
 import type {
   CollectionId,
   CollectionItem,
-  CollectionType,
   DatabaseId,
   NativeQuerySnippet,
   SchemaName,
-  SearchResult,
-  SearchResultId,
   TableId,
 } from "metabase-types/api";
 
-import type {
-  TablePickerStatePath,
-  TablePickerValue,
-} from "../Pickers/TablePicker";
+export type EntityPickerOptions = {
+  // options to show/hide root items
+  hasSearch?: boolean;
+  hasRecents?: boolean;
+  hasDatabases?: boolean;
+  hasLibrary?: boolean;
+  hasRootCollection?: boolean;
+  hasPersonalCollection?: boolean;
+  hasPersonalCollections?: boolean; // other users personal collections
 
-import type { EntityPickerModalOptions } from "./components/EntityPickerModal";
-
-export type TypeWithModel<Id, Model extends string> = {
-  id: Id;
-  model: Model;
-  name: string;
-  can_write?: boolean;
-  moderated_status?: "verified" | null;
-  type?: CollectionType;
+  // options to customize the button bar
+  hasConfirmButtons?: boolean;
+  canCreateCollections?: boolean;
+  actionButtons?: React.ReactNode[] | React.ReactNode;
+  confirmButtonText?: React.ReactNode;
+  cancelButtonText?: React.ReactNode;
 };
 
-export type IsFolder<
-  Id,
-  Model extends string,
-  Item extends TypeWithModel<Id, Model>,
-> = (item: Item) => boolean;
+export type PickerItemFunctions = {
+  isFolderItem: (item: OmniPickerItem) => item is OmniPickerFolderItem;
+  isHiddenItem: (item: OmniPickerItem) => boolean;
+  isDisabledItem: (item: OmniPickerItem) => boolean;
+  isSelectableItem: (item: OmniPickerItem) => boolean;
+}
 
-export type PickerState<Item, Query> = PickerStateItem<Item, Query>[];
-
-export type PickerStateItem<Item, Query> = {
-  query?: Query;
-  selectedItem: Item | null;
-  entity?: "collection" | "dashboard";
-};
-
-export type EntityPickerOptions = EntityPickerModalOptions;
-
-export type EntityPickerTabRenderProps<
-  Id extends SearchResultId,
-  Model extends string,
-  Item extends TypeWithModel<Id, Model>,
-> = {
-  onItemSelect: (item: Item) => void;
-};
-
-export type EntityPickerTabId = string;
-
-export type EntityPickerTab<
-  Id extends SearchResultId,
-  Model extends string,
-  Item extends TypeWithModel<Id, Model>,
-> = {
-  id: EntityPickerTabId;
-  displayName: string;
-  render: (props: EntityPickerTabRenderProps<Id, Model, Item>) => JSX.Element;
-  icon: IconName;
-  /**
-   * Recents & Search tabs don't have models associated with them - hence null
-   * (they provide the same models as the other tabs combined).
-   */
-  models: Model[];
-  folderModels: Model[];
-  extraButtons?: ReactNode[];
-};
-
-export type EntityPickerSearchScope = "everywhere" | "folder";
-
-export type ListProps<
-  Id,
-  Model extends string,
-  Item extends TypeWithModel<Id, Model>,
-  Query,
-  Options extends EntityPickerOptions,
-> = {
-  query?: Query;
-  onClick: (val: Item) => void;
-  selectedItem: Item | null;
-  isFolder: IsFolder<Id, Model, Item>;
-  isCurrentLevel: boolean;
-  options: Options;
-  shouldDisableItem?: (item: Item) => boolean;
-  shouldShowItem?: (item: Item) => boolean;
-  entity?: "collection" | "dashboard";
-  refresh?: () => void;
-  initialValue?: TablePickerValue;
-  tablesPath?: TablePickerStatePath;
-  onTablesPathChange?: (tablesPath: TablePickerStatePath) => void;
-};
-
-export type FilterItemsInPersonalCollection = "only" | "exclude";
-
-export type TabFolderState<
-  Id,
-  Model extends string,
-  Item extends TypeWithModel<Id, Model>,
-> = Partial<Record<EntityPickerTabId, Item>>;
-
-export type SearchItem = Pick<SearchResult, "id" | "model" | "name"> &
-  Partial<
-    Pick<
-      SearchResult,
-      | "collection"
-      | "dashboard"
-      | "description"
-      | "collection_authority_level"
-      | "moderated_status"
-      | "display"
-      | "database_name"
-      | "table_schema"
-    >
-  >;
+export type EntityPickerProps = {
+  onChange: (value: OmniPickerItem) => void;
+  onClose: () => void;
+  models: OmniPickerItem["model"][];
+  options: EntityPickerOptions;
+  value?: OmniPickerValue;
+  searchQuery?: string;
+} & PickerItemFunctions;
 
 
-// =========== new try on types ===========
+export type OmniPickerContextValue = {
+  path: OmniPickerItem[];
+  setPath: Dispatch<SetStateAction<OmniPickerItem[]>>;
+  isLoadingPath: boolean;
+  previousPath: OmniPickerItem[];
+  setPreviousPath: Dispatch<SetStateAction<OmniPickerItem[]>>;
+  searchScope: string;
+  setSearchScope: Dispatch<SetStateAction<string>>;
+} & EntityPickerProps;
 
 export type OmniPickerCollectionItem = Pick<
   CollectionItem,
-  "name" | "model" | "here" | "below" | "moderated_status" | "display" | "can_write" | "location" | "collection"
+  "name" | "model" | "here" | "below" | "moderated_status" | "display" | "can_write" | "location" | "collection" | "type" | "namespace"
 > & {
   id: CollectionItem["id"] | CollectionId;
 };
@@ -210,4 +141,3 @@ export type SearchableOmniPickerItem =
   | OmniPickerCollectionItem
   | OmniPickerTableItem
   | OmniPickerDatabaseItem;
-

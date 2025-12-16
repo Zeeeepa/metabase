@@ -137,11 +137,12 @@ export interface CollectionItem {
   based_on_upload?: TableId | null; // only for models
   collection?: Collection | null;
   collection_id: CollectionId | null; // parent collection id
+  namespace?: CollectionNamespace; // namespace of the item itself
   collection_namespace?: CollectionNamespace; // namespace of the parent collection
   display?: VisualizationDisplay;
   personal_owner_id?: UserId;
   database_id?: DatabaseId;
-  moderated_status?: string;
+  moderated_status?: string | null;
   type?: CollectionType | CardType;
   here?: CollectionItemModel[];
   below?: CollectionItemModel[];

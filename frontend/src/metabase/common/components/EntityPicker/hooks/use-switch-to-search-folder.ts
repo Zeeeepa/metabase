@@ -7,13 +7,14 @@ import type { OmniPickerItem } from "../types";
 import { validCollectionModels } from "../utils";
 
 export function useSwitchToSearchFolder() {
-  const { path, setPath, searchQuery, setPreviousPath, previousPath } = useOmniPickerContext();
+  const { path, setPath, searchQuery, setPreviousPath, previousPath, setSearchScope } = useOmniPickerContext();
   const previousSearchQuery = usePrevious(searchQuery);
 
   useEffect(() => {
     if (searchQuery && searchQuery !== previousSearchQuery) {
       if (path[0]?.id !== "search-results") {
         setPreviousPath(path);
+        setSearchScope("");
       }
       setPath([{
         id: "search-results",

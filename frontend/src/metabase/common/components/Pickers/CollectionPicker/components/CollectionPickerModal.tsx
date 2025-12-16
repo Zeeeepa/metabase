@@ -13,11 +13,8 @@ import type { RecentItem, SearchResult } from "metabase-types/api";
 
 import {
   EntityPickerModal,
-  type EntityPickerTab,
-  defaultOptions,
 } from "../../../EntityPicker";
 import { useLogRecentItem } from "../../../EntityPicker/hooks/use-log-recent-item";
-import { NewDashboardDialog } from "../../DashboardPicker/components/NewDashboardDialog";
 import { getNamespaceForItem, isNamespaceRoot } from "../../utils";
 import type {
   CollectionPickerItem,
@@ -28,8 +25,6 @@ import type {
 } from "../types";
 import { getCollectionType } from "../types";
 
-import { CollectionPicker } from "./CollectionPicker/CollectionPicker";
-import { NewCollectionDialog } from "./NewCollectionDialog";
 
 export interface CollectionPickerModalProps {
   title?: string;
@@ -37,12 +32,7 @@ export interface CollectionPickerModalProps {
   onClose: () => void;
   options?: CollectionPickerOptions;
   value?: Pick<CollectionPickerValueItem, "id" | "model" | "collection_id">;
-  shouldDisableItem?: (item: CollectionPickerItem) => boolean;
-  entityType?: EntityType;
-  searchResultFilter?: (searchResults: SearchResult[]) => SearchResult[];
-  recentFilter?: (recentItems: RecentItem[]) => RecentItem[];
   models?: CollectionPickerModel[];
-  canSelectItem?: (item: CollectionPickerItem) => boolean;
 }
 
 const baseCanSelectItem = (
@@ -364,19 +354,6 @@ export const CollectionPickerModal = ({
         disableCloseOnEscape={
           isCreateCollectionDialogOpen || isCreateDashboardDialogOpen
         }
-      />
-      <NewCollectionDialog
-        isOpen={isCreateCollectionDialogOpen}
-        onClose={closeCreateCollectionDialog}
-        parentCollectionId={parentCollectionId}
-        onNewCollection={handleNewCollectionCreate}
-        namespace={effectiveNamespace}
-      />
-      <NewDashboardDialog
-        isOpen={isCreateDashboardDialogOpen}
-        onClose={closeCreateDashboardDialog}
-        parentCollectionId={parentCollectionId}
-        onNewDashboard={handleNewDashboardCreate}
       />
     </>
   );

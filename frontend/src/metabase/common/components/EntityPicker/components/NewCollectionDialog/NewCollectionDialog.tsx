@@ -48,11 +48,17 @@ export const NewCollectionDialog = () => {
 
   useEscapeToCloseModal(close, { capture: true });
 
-  if (!options.canCreateCollections || !lastCollection) {
+  if (!options.canCreateCollections) {
     return null;
   }
 
+  const canCreateHere =
+    lastCollection && "can_write" in lastCollection && lastCollection.can_write;
+
   const onCreateNewCollection = async ({ name }: { name: string }) => {
+    if (!canCreateHere) {
+      return;
+    }
     // Virtual collection IDs like "root" and "tenant" should be converted to null
     // These represent namespace roots which have no parent
     const isVirtualRoot =
@@ -81,9 +87,6 @@ export const NewCollectionDialog = () => {
     }
     close();
   };
-
-  const canCreateHere =
-    "can_write" in lastCollection && lastCollection.can_write;
 
   return (
     <>

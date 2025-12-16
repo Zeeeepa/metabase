@@ -1,16 +1,14 @@
 import { skipToken, useListDashboardItemsQuery } from "metabase/api";
 
-import { ItemList } from "../..";
-import type {
-  CollectionItemListProps,
-  CollectionPickerItem,
-} from "../../../Pickers/CollectionPicker/types";
+import type { OmniPickerItem } from "../../types";
+
+import { ItemList } from "./ItemList";
 
 export const DashboardItemList = ({
   parentItem,
   pathIndex,
 }: {
-  parentItem: CollectionPickerItem;
+  parentItem: OmniPickerItem;
   pathIndex: number;
 }) => {
   const {
