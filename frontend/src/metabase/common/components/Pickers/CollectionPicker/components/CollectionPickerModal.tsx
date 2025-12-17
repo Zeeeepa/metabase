@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { t } from "ttag";
 import _ from "underscore";
 
@@ -7,37 +7,21 @@ import {
   canPlaceEntityInCollection,
   canPlaceEntityInCollectionOrDescendants,
 } from "metabase/collections/utils";
-import { useToggle } from "metabase/common/hooks/use-toggle";
-import { Button, Icon } from "metabase/ui";
 import type { RecentItem, SearchResult } from "metabase-types/api";
 
 import {
   EntityPickerModal,
+  type EntityPickerModalProps,
+  type OmniPickerCollectionItem,
+  type OmniPickerItem,
 } from "../../../EntityPicker";
-import { useLogRecentItem } from "../../../EntityPicker/hooks/use-log-recent-item";
 import { getNamespaceForItem, isNamespaceRoot } from "../../utils";
-import type {
-  CollectionPickerItem,
-  CollectionPickerModel,
-  CollectionPickerOptions,
-  CollectionPickerStatePath,
-  CollectionPickerValueItem,
-} from "../types";
 import { getCollectionType } from "../types";
 
 
-export interface CollectionPickerModalProps {
-  title?: string;
-  onChange: (item: CollectionPickerValueItem) => void;
-  onClose: () => void;
-  options?: CollectionPickerOptions;
-  value?: Pick<CollectionPickerValueItem, "id" | "model" | "collection_id">;
-  models?: CollectionPickerModel[];
-}
-
 const baseCanSelectItem = (
-  item: Pick<CollectionPickerItem, "can_write" | "model"> | null | undefined,
-): item is CollectionPickerValueItem => {
+  item: OmniPickerCollectionItem,
+): boolean => {
   return (
     !!item &&
     item.can_write !== false &&
@@ -78,26 +62,22 @@ const recentItemFilter = (
   });
 };
 
+/**
+ * A picker that only picks collections
+ */
 export const CollectionPickerModal = ({
   title = t`Choose a collection`,
-  onChange,
-  onClose,
-  value,
-  options = defaultOptions,
-  shouldDisableItem: shouldDisableItemProp,
   entityType,
-  searchResultFilter,
-  recentFilter,
-  models: modelsProp,
-  canSelectItem: _canSelectItem,
-}: CollectionPickerModalProps) => {
-  options = { ...defaultOptions, ...options };
-
-  const models = modelsProp || ["collection"];
-
+  isDisabledItem: isDisabledItemProp,
+  isHiddenItem: isHiddenItemProp,
+  isSelectableItem: isSelectableItemProp,
+  ...props
+}: EntityPickerModalProps & {
+  entityType?: EntityType;
+}) => {
   const shouldDisableItem = useMemo(() => {
     const entityTypeCheck = entityType
-      ? (item: CollectionPickerItem) => {
+      ? (item: OmniPickerCollectionItem) => {
           if (item.model === "collection") {
             return !canPlaceEntityInCollectionOrDescendants(
               entityType,
@@ -108,48 +88,42 @@ export const CollectionPickerModal = ({
         }
       : undefined;
 
-    if (shouldDisableItemProp && entityTypeCheck) {
-      return (item: CollectionPickerItem) => {
-        return shouldDisableItemProp(item) || entityTypeCheck(item);
+    if (isDisabledItemProp && entityTypeCheck) {
+      return (item: OmniPickerCollectionItem) => {
+        return isDisabledItemProp(item) || entityTypeCheck(item);
       };
     }
 
-    return shouldDisableItemProp || entityTypeCheck;
-  }, [shouldDisableItemProp, entityType]);
+    return isDisabledItemProp || entityTypeCheck;
+  }, [isDisabledItemProp, entityType]);
 
-  const [selectedItem, setSelectedItem] = useState<CollectionPickerItem | null>(
-    null,
-  );
 
   // canSelectItem determines if the Confirm button should be enabled
   // Namespace roots can be navigated into but not selected as final destinations
   const canSelectItem = useCallback(
     (
-      item:
-        | Pick<CollectionPickerItem, "id" | "can_write" | "model">
-        | null
-        | undefined,
-    ): item is CollectionPickerValueItem => {
+      item: OmniPickerItem,
+    ): boolean => {
       if (!baseCanSelectItem(item)) {
         return false;
       }
 
-      if (_canSelectItem && !_canSelectItem(item)) {
+      if (isSelectableItemProp && !isSelectableItemProp(item)) {
         return false;
       }
 
       if (entityType && item.model === "collection") {
-        const collectionType = getCollectionType(item as CollectionPickerItem);
+        const collectionType = getCollectionType(item);
         if (!canPlaceEntityInCollection(entityType, collectionType)) {
           return false;
         }
       }
 
-      // Check if namespace root is disallowed for this savingModel
+      // Check if namespace root is disallowed for this entityType
       if (
-        options.savingModel &&
-        options.savingModel !== "collection" &&
-        isNamespaceRoot(item as CollectionPickerItem)
+        entityType &&
+        entityType !== "collection" &&
+        isNamespaceRoot(item)
       ) {
         return false;
       }
@@ -159,166 +133,20 @@ export const CollectionPickerModal = ({
     [_canSelectItem, entityType, options.savingModel],
   );
 
-  const { tryLogRecentItem } = useLogRecentItem();
-
-  const handleChange = useCallback(
-    async (item: CollectionPickerValueItem) => {
-      await onChange(item);
-      tryLogRecentItem(item);
-    },
-    [onChange, tryLogRecentItem],
-  );
-
-  const [
-    isCreateCollectionDialogOpen,
-    {
-      turnOn: openCreateCollectionDialog,
-      turnOff: closeCreateCollectionDialog,
-    },
-  ] = useToggle(false);
-
-  const [
-    isCreateDashboardDialogOpen,
-    { turnOn: openCreateDashboardDialog, turnOff: closeCreateDashboardDialog },
-  ] = useToggle(false);
-
-  const pickerRef = useRef<{
-    onNewCollection: (item: CollectionPickerItem) => void;
-    onNewDashboard: (item: CollectionPickerItem) => void;
-  }>();
-
-  const handleInit = useCallback((item: CollectionPickerItem) => {
-    setSelectedItem((current) => current ?? item);
-  }, []);
-
-  const handleItemSelect = useCallback(
-    async (item: CollectionPickerItem) => {
-      if (options.hasConfirmButtons) {
-        setSelectedItem(item);
-      } else if (canSelectItem(item)) {
-        await handleChange(item);
-      }
-    },
-    [handleChange, options, canSelectItem],
-  );
-
-  const handleConfirm = async () => {
-    if (selectedItem && canSelectItem(selectedItem)) {
-      await handleChange(selectedItem);
+  const shouldHide = useMemo(() => {
+    if (isHiddenItemProp) {
+      return (item: OmniPickerItem) => {
+        return isHiddenItemProp(item) || isNamespaceRoot(item);
+      };
     }
-  };
+
+    return isNamespaceRoot;
+  }, [isHiddenItemProp]);
 
   const canCreateCollectionInSelected =
     selectedItem?.can_write !== false &&
     (selectedItem?.model !== "collection" ||
       canPlaceEntityInCollection("collection", selectedItem.type));
-
-  const modalActions = options.allowCreateNew
-    ? _.compact([
-        models.includes("dashboard") && (
-          <Button
-            key="dashboard-on-the-go"
-            miw="9.5rem"
-            onClick={openCreateDashboardDialog}
-            leftSection={<Icon name="add_to_dash" />}
-            disabled={Boolean(
-              selectedItem?.can_write === false ||
-                (selectedItem && isNamespaceRoot(selectedItem)),
-            )}
-          >
-            {t`New dashboard`}
-          </Button>
-        ),
-        <Button
-          key="collection-on-the-go"
-          miw="9.5rem"
-          onClick={openCreateCollectionDialog}
-          leftSection={<Icon name="collection" />}
-          disabled={!canCreateCollectionInSelected}
-        >
-          {t`New collection`}
-        </Button>,
-      ])
-    : [];
-
-  const [collectionsPath, setCollectionsPath] =
-    useState<CollectionPickerStatePath>();
-
-  const tabs: EntityPickerTab<
-    CollectionPickerItem["id"],
-    CollectionPickerItem["model"],
-    CollectionPickerItem
-  >[] = [
-    {
-      id: "collections-tab",
-      displayName: models.some((model) => model !== "collection")
-        ? t`Browse`
-        : t`Collections`,
-      models: models,
-      folderModels: ["collection"],
-      icon: "folder",
-      render: ({ onItemSelect }) => (
-        <CollectionPicker
-          initialValue={value}
-          options={options}
-          path={collectionsPath}
-          ref={pickerRef}
-          shouldDisableItem={shouldDisableItem}
-          onInit={handleInit}
-          onItemSelect={onItemSelect}
-          onPathChange={setCollectionsPath}
-          models={models}
-        />
-      ),
-    },
-  ];
-
-  const handleNewCollectionCreate = (newCollection: CollectionPickerItem) => {
-    pickerRef.current?.onNewCollection(newCollection);
-  };
-
-  const handleNewDashboardCreate = (newDashboard: CollectionPickerItem) => {
-    pickerRef.current?.onNewDashboard(newDashboard);
-  };
-
-  const composedSearchResultFilter = useCallback(
-    (searchResults: SearchResult[]) => {
-      if (searchResultFilter) {
-        return searchFilter(searchResultFilter(searchResults), entityType);
-      }
-      return searchFilter(searchResults, entityType);
-    },
-    [searchResultFilter, entityType],
-  );
-
-  const composedRecentFilter = useCallback(
-    (recentItems: RecentItem[]) => {
-      const filtered = recentItemFilter(recentItems, entityType);
-      if (recentFilter) {
-        return recentFilter(filtered);
-      }
-      return filtered;
-    },
-    [recentFilter, entityType],
-  );
-
-  const parentCollectionId = useMemo(() => {
-    if (
-      selectedItem &&
-      isNamespaceRoot(selectedItem) &&
-      selectedItem.can_write
-    ) {
-      return selectedItem.id;
-    } else if (canSelectItem(selectedItem)) {
-      return selectedItem.model === "dashboard"
-        ? selectedItem.collection_id
-        : selectedItem.id;
-    } else if (canSelectItem(value)) {
-      return value.model === "dashboard" ? value.collection_id : value.id;
-    } else {
-      return "root";
-    }
-  }, [selectedItem, value, canSelectItem]);
 
   // Determine the effective namespace for creating new collections
   // Priority: 1) options.namespace (explicit), 2) selectedItem namespace, 3) undefined
@@ -335,25 +163,11 @@ export const CollectionPickerModal = ({
   return (
     <>
       <EntityPickerModal
-        models={["collection"]}
         title={title}
-        onItemSelect={handleItemSelect}
-        canSelectItem={
-          !isCreateCollectionDialogOpen &&
-          !isCreateDashboardDialogOpen &&
-          canSelectItem(selectedItem)
-        }
-        onChange={handleChange}
-        initialValue={value}
-        onClose={onClose}
-        options={options}
-        searchResultFilter={composedSearchResultFilter}
-        recentFilter={composedRecentFilter}
-        actionButtons={modalActions}
-        trapFocus={!isCreateCollectionDialogOpen}
-        disableCloseOnEscape={
-          isCreateCollectionDialogOpen || isCreateDashboardDialogOpen
-        }
+        isDisabledItem={shouldDisableItem}
+        isSelectableItem={canSelectItem}
+        {...props}
+        models={["collection"]}
       />
     </>
   );

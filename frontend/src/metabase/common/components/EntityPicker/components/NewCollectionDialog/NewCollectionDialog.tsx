@@ -18,6 +18,9 @@ import { Button, Flex, Modal } from "metabase/ui";
 
 import { useOmniPickerContext } from "../../context";
 import type { OmniPickerCollectionItem, OmniPickerItem } from "../../types";
+import { canPlaceEntityInCollection } from "metabase/collections/utils";
+import { CollectionType } from "metabase-types/api";
+import { getCollectionType } from "../../utils";
 
 const NEW_COLLECTION_SCHEMA = Yup.object({
   name: Yup.string()
@@ -53,7 +56,10 @@ export const NewCollectionDialog = () => {
   }
 
   const canCreateHere =
-    lastCollection && "can_write" in lastCollection && lastCollection.can_write;
+    lastCollection &&
+    "can_write" in lastCollection &&
+    lastCollection.can_write &&
+    canPlaceEntityInCollection("collection", getCollectionType(lastCollection));
 
   const onCreateNewCollection = async ({ name }: { name: string }) => {
     if (!canCreateHere) {

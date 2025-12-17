@@ -12,7 +12,7 @@ import type {
   ListCollectionItemsRequest,
 } from "metabase-types/api";
 
-import type { PickerState } from "../EntityPicker";
+import type { OmniPickerItem, PickerState } from "../EntityPicker";
 
 import type {
   CollectionPickerItem,
@@ -198,7 +198,7 @@ const resolveEntityId = (
   }
 };
 
-export const isNamespaceRoot = (item: CollectionPickerItem): boolean => {
+export const isNamespaceRoot = (item: OmniPickerItem): boolean => {
   return PLUGIN_TENANTS.isTenantCollectionId(item.id);
 };
 

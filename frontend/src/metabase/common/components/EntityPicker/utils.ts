@@ -1,11 +1,15 @@
 import { getIcon } from "metabase/lib/icon";
 import type {
   CollectionItemModel,
+  CollectionType,
+  RecentItem,
+  SearchResult,
 } from "metabase-types/api";
 import { isObject } from "metabase-types/guards";
 
 import {
   type EntityPickerProps,
+  type OmniPickerCollectionItem,
   type OmniPickerFolderItem,
   OmniPickerFolderModel,
   type OmniPickerItem,
@@ -97,19 +101,22 @@ export function getItemFunctions({
         ...("below" in item && Array.isArray(item.below) ? item.below : []),
       ]),
     );
+
     return (
       item.model === OmniPickerFolderModel.Collection &&
       hereBelowSet.some((hereBelowModel) => modelSet.has(hereBelowModel))
     );
   };
 
+  // selectable should be narrower than hidden or disabled because
+  // intermediate items should not be disabled, but can't ultimately be selected
   const isSelectable = (item: OmniPickerItem) => {
-    if (isSelectableItem && isSelectableItem(item)) {
-      return true;
-    }
-
     if (!isValidItem(item)) {
       return false;
+    }
+
+    if (isSelectableItem) {
+      return isSelectableItem(item);
     }
 
     return modelSet.has(item.model);
@@ -131,8 +138,12 @@ export function getItemFunctions({
   };
 
   const isDisabled = (item: OmniPickerItem) => {
-    if (isDisabledItem && isDisabledItem(item)) {
+    if (!isValidItem(item)) {
       return true;
+    }
+
+    if (isDisabledItem) {
+      return isDisabledItem(item);
     }
 
     return false;
@@ -163,3 +174,21 @@ export const getValidCollectionItemModels = (models: OmniPickerItem['model'][]):
   models
   .filter(isValidModel)
   .concat(["collection"]); // always show folder models, TODO: what about dashboards?
+
+/**
+ * Returns the collection type for an item.
+ * Recent items and search results use `collection_type` field,
+ * while regular collection picker items use `type` field.
+ */
+export function getCollectionType(
+  item: OmniPickerCollectionItem | RecentItem | SearchResult,
+): CollectionType | null {
+  if ("collection_type" in item && item.collection_type) {
+    return item.collection_type ?? null;
+  }
+
+  if ("type" in item && item.type) {
+    return item.type;
+  }
+  return null;
+}

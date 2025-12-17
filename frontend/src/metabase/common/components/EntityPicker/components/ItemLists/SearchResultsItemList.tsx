@@ -7,7 +7,7 @@ import { useOmniPickerContext } from "metabase/common/components/EntityPicker/co
 import { SearchResults } from "./SearchResults";
 
 export const SearchResultsItemList = () => {
-  const { models, searchQuery, isHiddenItem, searchScope } =
+  const { models, searchQuery, isHiddenItem, isDisabledItem, searchScope } =
     useOmniPickerContext();
 
   const { searchCollection, searchModels } = useMemo(() => {
@@ -40,8 +40,10 @@ export const SearchResultsItemList = () => {
     { skip: !debouncedQuery.q },
   );
 
-  const filteredResults =
-    results?.data.filter((item) => !isHiddenItem?.(item)) || [];
+  const filteredResults = results?.data?.filter(
+    // don't show something you can't pick at all
+    (item) => !isHiddenItem(item) || !isDisabledItem(item)
+  ) || [];
 
   if (!debouncedQuery) {
     return null;
