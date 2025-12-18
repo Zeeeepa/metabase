@@ -81,18 +81,18 @@ main() {
         issues+=("Node.js: not installed (need >= 22)")
     fi
 
-    # pnpm
-    pnpm_version=$(get_pnpm_version)
-    if [ -n "$pnpm_version" ]; then
-        if check_pnpm_version "$pnpm_version"; then
-            print_found "pnpm $pnpm_version (meets requirement: >= 9)"
+    # bun
+    bun_version=$(get_bun_version)
+    if [ -n "$bun_version" ]; then
+        if check_bun_version "$bun_version"; then
+            print_found "bun $bun_version (meets requirement: >= 1.0)"
         else
-            print_warning "pnpm $pnpm_version (required: >= 9)"
-            issues+=("pnpm: version $pnpm_version is not >= 9")
+            print_warning "bun $bun_version (required: >= 1.0)"
+            issues+=("bun: version $bun_version is not >= 1.0")
         fi
     else
-        print_not_found "pnpm (required: >= 9)"
-        issues+=("pnpm: not installed (need pnpm >= 9)")
+        print_not_found "bun (required: >= 1.0)"
+        issues+=("bun: not installed (need bun >= 1.0)")
     fi
 
     # Java
@@ -155,7 +155,7 @@ main() {
 
     echo -e "  ${BOLD}Required Tools:${NC}"
     echo "    - Node.js >= 22 (currently specified in .nvmrc)"
-    echo "    - pnpm >= 9"
+    echo "    - bun >= 1.0"
     echo "    - Java 21 with Eclipse Temurin distribution (for Clojure backend)"
     if [ -n "$required_clojure_version" ]; then
         echo "    - Clojure CLI (for Clojure $required_clojure_version specified in deps.edn)"

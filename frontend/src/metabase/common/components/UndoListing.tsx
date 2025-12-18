@@ -300,7 +300,7 @@ export function UndoListOverlay({
                   mountOnEnter
                   unmountOnExit
                 >
-                  {(state) => (
+                  {(state: TransitionStatus) => (
                     <UndoToast
                       undo={undo}
                       onUndo={() => onUndo(undo)}
