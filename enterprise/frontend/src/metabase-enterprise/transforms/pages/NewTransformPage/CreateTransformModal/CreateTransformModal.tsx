@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import { t } from "ttag";
+import type * as Yup from "yup";
 
 import { hasFeature } from "metabase/admin/databases/utils";
 import {
