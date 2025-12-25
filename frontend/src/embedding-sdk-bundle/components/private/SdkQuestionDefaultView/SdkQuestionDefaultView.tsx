@@ -11,6 +11,7 @@ import {
 } from "embedding-sdk-bundle/components/private/PublicComponentWrapper";
 import { QuestionVisualization } from "embedding-sdk-bundle/components/private/SdkQuestion/components/Visualization";
 import { SdkQuestion } from "embedding-sdk-bundle/components/public/SdkQuestion";
+import { useCollectionData } from "embedding-sdk-bundle/hooks/private/use-collection-data";
 import { useSdkBreadcrumbs } from "embedding-sdk-bundle/hooks/private/use-sdk-breadcrumb";
 import { shouldRunCardQuery } from "embedding-sdk-bundle/lib/sdk-question";
 import { useSdkSelector } from "embedding-sdk-bundle/store";
@@ -85,8 +86,8 @@ export const SdkQuestionDefaultView = ({
     isQuestionLoading,
     originalQuestion,
     isSaveEnabled,
-    canWriteToTargetCollection,
     withDownloads,
+    targetCollection,
     onReset,
     onNavigateBack,
   } = useSdkQuestionContext();
@@ -153,6 +154,11 @@ export const SdkQuestionDefaultView = ({
     onNavigateBack,
     onReset,
   ]);
+
+  const { canWrite: canWriteToTargetCollection } = useCollectionData(
+    targetCollection,
+    { skip: !isSaveEnabled },
+  );
 
   if (
     !isEditorOpen &&
