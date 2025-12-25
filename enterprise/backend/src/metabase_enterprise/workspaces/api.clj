@@ -441,12 +441,12 @@
     (api/check-400 (nil? (:archived_at workspace)) "Cannot execute archived workspace")
     (ws.impl/execute-workspace! workspace {:stale-only stale_only})))
 
-(mr/def ::graph-node-type [:enum :input-table :external-transform :workspace-transform])
+(mr/def ::graph-node-type [:enum :input-table :output-table :external-transform :workspace-transform])
 
 (mr/def ::graph-node
   [:map
    [:id ::appdb-or-ref-id]
-   [:type [:enum :input-table :external-transform :workspace-transform]]
+   [:type [:enum :input-table :output-table :external-transform :workspace-transform]]
    [:dependents_count [:map-of ::graph-node-type ms/PositiveInt]]
    [:data :map]])
 
@@ -462,11 +462,16 @@
    [:nodes [:sequential ::graph-node]]
    [:edges [:sequential ::graph-edge]]])
 
-(defn- node-type [node]
-  (let [nt (:node-type node)]
-    (case nt
-      :table :input-table
-      nt)))
+(defn- node-type
+  "Convert internal node-type to API node type.
+   Tables can be either :input-table or :output-table depending on context."
+  ([node]
+   (node-type node :input-table))
+  ([node default-table-type]
+   (let [nt (:node-type node)]
+     (case nt
+       :table default-table-type
+       nt))))
 
 (defn- node-id [{:keys [node-type id]}]
   (case node-type
@@ -474,46 +479,155 @@
     :external-transform id
     :table (str (:db id) "-" (:schema id) "-" (:table id))))
 
+(def ^:private table-select-fields
+  "Fields to select when fetching table data, matching the dependencies API."
+  [:id :name :description :display_name :db_id :schema])
+
+(def ^:private table-data-keys
+  "Keys to include in table node data, matching the dependencies API."
+  [:id :name :description :display_name :db_id :db :schema :fields])
+
+(defn- hydrate-table-from-coords
+  "Fetch and hydrate a table from its coordinates {:db :schema :table :id}.
+   Returns hydrated table data if found, otherwise returns the raw coordinates."
+  [{:keys [db schema table id] :as coords}]
+  (if-let [table-record (if id
+                          (t2/select-one (into [:model/Table] table-select-fields) :id id)
+                          (t2/select-one (into [:model/Table] table-select-fields)
+                                         :db_id db :schema schema :name table))]
+    (-> table-record
+        (t2/hydrate :fields :db)
+        (select-keys table-data-keys))
+    ;; Table doesn't exist yet, return coordinates
+    coords))
+
+(defn- bulk-hydrate-tables
+  "Batch fetch and hydrate tables from a list of coordinates.
+   Returns a map from coord -> hydrated table data."
+  [table-coords]
+  (when (seq table-coords)
+    (let [;; Separate coords with IDs from those without
+          with-id    (filter :id table-coords)
+          without-id (remove :id table-coords)
+          ;; Fetch tables by ID
+          by-id      (when (seq with-id)
+                       (let [ids (map :id with-id)
+                             tables (-> (t2/select (into [:model/Table] table-select-fields) :id [:in ids])
+                                        (t2/hydrate :fields :db))]
+                         (zipmap (map :id tables) tables)))
+          ;; Fetch tables by coordinates (db, schema, name)
+          by-coord   (when (seq without-id)
+                       (let [tables (-> (t2/select (into [:model/Table] table-select-fields)
+                                                   {:where (into [:or]
+                                                                 (for [{:keys [db schema table]} without-id]
+                                                                   [:and
+                                                                    [:= :db_id db]
+                                                                    [:= :schema schema]
+                                                                    [:= :name table]]))})
+                                        (t2/hydrate :fields :db))]
+                         (into {} (map (fn [t] [[(:db_id t) (:schema t) (:name t)] t]) tables))))]
+      ;; Build result map from coord -> hydrated data
+      (into {}
+            (for [{:keys [db schema table id] :as coord} table-coords]
+              [coord
+               (if-let [table-record (or (when id (get by-id id))
+                                         (get by-coord [db schema table]))]
+                 (select-keys table-record table-data-keys)
+                 ;; Table doesn't exist yet, return coordinates
+                 coord)])))))
+
 ;; TODO we'll want to bulk query this of course...
 (defn- node-data [{:keys [node-type id]}]
   (case node-type
-    :table id
+    :table (hydrate-table-from-coords id)
     :external-transform (t2/select-one [:model/Transform :id :name] id)
     ;; TODO we'll want to select by workspace as well here, to relax uniqueness assumption
     :workspace-transform (t2/select-one [:model/WorkspaceTransform :ref_id :name] :ref_id id)))
+
+(defn- invert-dependencies
+  "Invert the dependencies map to get a map from parent -> children (dependents)."
+  [dependencies]
+  (reduce
+   (fn [inv [child parents]]
+     (reduce (fn [inv p] (update inv p (fnil conj #{}) child)) inv parents))
+   {}
+   dependencies))
+
+(defn- get-transform-outputs
+  "Get output tables for each transform in the workspace.
+   Returns a map from transform ref_id -> list of output table coords."
+  [ws-id]
+  (let [outputs (t2/select [:model/WorkspaceOutput
+                            :ref_id
+                            [:db_id :db]
+                            [:global_schema :schema]
+                            [:global_table :table]
+                            [:global_table_id :id]]
+                           :workspace_id ws-id)]
+    (reduce (fn [m {:keys [ref_id db schema table id]}]
+              (update m ref_id (fnil conj []) {:db db :schema schema :table table :id id}))
+            {}
+            outputs)))
 
 (api.macros/defendpoint :get "/:ws-id/graph" :- GraphResult
   "Display the dependency graph between the Changeset and the (potentially external) entities that they depend on."
   [{:keys [ws-id]} :- [:map [:ws-id ms/PositiveInt]]
    _query-params]
   (let [workspace (api/check-404 (t2/select-one :model/Workspace :id ws-id))
-        {:keys [inputs entities dependencies]} (ws.impl/get-or-calculate-graph workspace)
-        ;; TODO Graph analysis doesn't return this currently, we need to invert the deps graph
-        ;;      It could be cheaper to build it as we go.
-        inverted (reduce
-                  (fn [inv [c parents]]
-                    (reduce (fn [inv p] (update inv p (fnil conj #{}) c)) inv parents))
-                  {}
-                  dependencies)
-        dep-count #(frequencies (map node-type (get inverted %)))]
+        {:keys [inputs outputs entities dependencies]} (ws.impl/get-or-calculate-graph workspace)
+        ;; Get transform -> output mappings for creating edges
+        transform-outputs (get-transform-outputs ws-id)
+        ;; Bulk hydrate all tables (inputs and outputs) for performance
+        all-tables        (concat inputs outputs)
+        hydrated-tables   (bulk-hydrate-tables all-tables)
+        ;; Build inverted dependencies for dependent counts
+        ;; Note: outputs aren't in dependencies (they're collapsed out), so we add them
+        inverted          (invert-dependencies dependencies)
+        ;; For output tables, the "dependent" is nothing (they're leaf nodes)
+        ;; For transforms, add output tables as dependents
+        inverted-with-outputs (reduce (fn [inv [tx-ref-id out-tables]]
+                                        (reduce (fn [inv out]
+                                                  (update inv
+                                                          {:node-type :workspace-transform :id tx-ref-id}
+                                                          (fnil conj #{})
+                                                          {:node-type :table :id out}))
+                                                inv
+                                                out-tables))
+                                      inverted
+                                      transform-outputs)
+        dep-count         (fn [node table-type]
+                            (frequencies (map #(node-type % table-type)
+                                              (get inverted-with-outputs node #{}))))]
 
     {:nodes (concat (for [i inputs]
                       {:type             :input-table
-                       ;; Use an id that's independent of whether the table exists yet.
                        :id               (node-id {:id i, :node-type :table})
-                       :data             i
-                       :dependents_count (dep-count {:node-type :table, :id i})})
+                       :data             (get hydrated-tables i i)
+                       :dependents_count (dep-count {:node-type :table, :id i} :input-table)})
+                    (for [o outputs]
+                      {:type             :output-table
+                       :id               (node-id {:id o, :node-type :table})
+                       :data             (get hydrated-tables o o)
+                       :dependents_count {}})  ; outputs are leaf nodes
                     (for [e entities]
                       {:type             (node-type e)
                        :id               (:id e)
                        :data             (node-data e)
-                       :dependents_count (dep-count e)}))
-     :edges (for [[child parents] dependencies, parent parents]
-              ;; Yeah, this graph points to dependents, not dependencies
-              {:from_entity_type (name (node-type parent))
-               :from_entity_id   (node-id parent)
-               :to_entity_type   (name (node-type child))
-               :to_entity_id     (node-id child)})}))
+                       :dependents_count (dep-count e :output-table)}))
+     :edges (concat
+             ;; Edges between transforms (from dependencies)
+             (for [[child parents] dependencies, parent parents]
+               {:from_entity_type (name (node-type parent))
+                :from_entity_id   (node-id parent)
+                :to_entity_type   (name (node-type child))
+                :to_entity_id     (node-id child)})
+             ;; Edges from transforms to their output tables
+             (for [[tx-ref-id out-tables] transform-outputs
+                   out out-tables]
+               {:from_entity_type "workspace-transform"
+                :from_entity_id   tx-ref-id
+                :to_entity_type   "output-table"
+                :to_entity_id     (node-id {:id out, :node-type :table})}))}))
 
 ;;; ---------------------------------------- Problems/Validation ----------------------------------------
 
