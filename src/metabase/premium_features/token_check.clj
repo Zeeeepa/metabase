@@ -115,7 +115,8 @@
                            t/local-date
                            str)})
 
-(defn- stats-for-token-request
+(defn metering-stats
+  "Collect metering statistics for billing purposes. Used by both token check and metering task. "
   []
   ;; NOTE: beware, if you use `defenterprise` here which uses any other `:feature` other than `:none`, it will
   ;; recursively trigger token check and will die
@@ -158,9 +159,8 @@
 (defn- http-fetch
   [base-url token site-uuid]
   (some-> (token-status-url token base-url)
-          (http/get {:query-params     (merge (stats-for-token-request)
-                                              {:site-uuid  site-uuid
-                                               :mb-version (:tag config/mb-version-info)})
+          (http/get {:query-params {:site-uuid site-uuid
+                                    :mb-version (:tag config/mb-version-info)}
                      :throw-exceptions false})))
 
 (defn- fetch-token-and-parse-body
