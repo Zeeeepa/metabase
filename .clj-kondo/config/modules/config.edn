@@ -954,6 +954,7 @@
            config
            internal-stats
            settings
+           task
            util}}
 
   product-feedback
