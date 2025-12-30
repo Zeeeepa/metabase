@@ -1090,9 +1090,7 @@ describe("scenarios > data studio > datamodel", () => {
         cy.findByText("New description").should("be.visible");
       });
 
-      // Skipped because data studio is not available with data model permissions only.
-      // Unskip once the new datamodel page is available in that case.
-      it.skip("should allow changing the table name with data model permissions only", () => {
+      it("should allow changing the table name with data model permissions only", () => {
         H.activateToken("pro-self-hosted");
         setDataModelPermissions({ tableIds: [ORDERS_ID] });
 
@@ -1168,9 +1166,7 @@ describe("scenarios > data studio > datamodel", () => {
         );
       });
 
-      // Skipped because data studio is not available with data model permissions only.
-      // Unskip once the new datamodel page is available in that case.
-      it.skip("should allow changing the field name with data model permissions only", () => {
+      it("should allow changing the field name with data model permissions only", () => {
         H.activateToken("pro-self-hosted");
         setDataModelPermissions({ tableIds: [ORDERS_ID] });
         cy.signIn("none");
@@ -1563,9 +1559,7 @@ describe("scenarios > data studio > datamodel", () => {
         );
       });
 
-      // Skipped because data studio is not available with data model permissions only.
-      // Unskip once the new datamodel page is available in that case.
-      it.skip("should allow changing the field name with data model permissions only", () => {
+      it("should allow changing the field name with data model permissions only", () => {
         H.activateToken("pro-self-hosted");
         setDataModelPermissions({ tableIds: [ORDERS_ID] });
         cy.signIn("none");
@@ -2013,9 +2007,7 @@ describe("scenarios > data studio > datamodel", () => {
           cy.findByLabelText("Left column").should("contain.text", "User ID");
         });
 
-        // Skipped because data studio is not available with data model permissions only.
-        // Unskip once the new datamodel page is available in that case.
-        it.skip("should allow to change the field foreign key target with no permissions to Reviews table", () => {
+        it("should allow to change the field foreign key target with no permissions to Reviews table", () => {
           H.activateToken("pro-self-hosted");
           setDataModelPermissions({
             tableIds: [ORDERS_ID, PRODUCTS_ID, PEOPLE_ID],
@@ -2072,9 +2064,7 @@ describe("scenarios > data studio > datamodel", () => {
           cy.findByLabelText("Left column").should("contain.text", "User ID");
         });
 
-        // Skipped because data studio is not available with data model permissions only.
-        // Unskip once the new datamodel page is available in that case.
-        it.skip("should not allow setting foreign key target for inaccessible tables", () => {
+        it("should not allow setting foreign key target for inaccessible tables", () => {
           H.activateToken("pro-self-hosted");
           setDataModelPermissions({ tableIds: [REVIEWS_ID] });
 
@@ -2691,9 +2681,7 @@ describe("scenarios > data studio > datamodel", () => {
             .and("have.value", "Title");
         });
 
-        // Skipped because data studio is not available with data model permissions only.
-        // Unskip once the new datamodel page is available in that case.
-        it.skip("should allow to change foreign key target for accessible tables", () => {
+        it("should allow to change foreign key target for accessible tables", () => {
           H.activateToken("pro-self-hosted");
           setDataModelPermissions({
             tableIds: [ORDERS_ID, REVIEWS_ID, PRODUCTS_ID],
@@ -2909,9 +2897,7 @@ describe("scenarios > data studio > datamodel", () => {
           });
         });
 
-        // Skipped because data studio is not available with data model permissions only.
-        // Unskip once the new datamodel page is available in that case.
-        it.skip("should show a proper error message when using custom mapping", () => {
+        it("should show a proper error message when using custom mapping", () => {
           H.activateToken("pro-self-hosted");
           setDataModelPermissions({ tableIds: [REVIEWS_ID] });
 
