@@ -1,6 +1,7 @@
 import { IndexRoute, Redirect, Route } from "react-router";
 
 import { PLUGIN_DEPENDENCIES } from "metabase/plugins";
+import { IsAdmin } from "metabase/route-guards";
 import { DataModelNewSegmentPage } from "metabase-enterprise/data-studio/segments/pages/DataModelNewSegmentPage";
 import { DataModelSegmentDependenciesPage } from "metabase-enterprise/data-studio/segments/pages/DataModelSegmentDependenciesPage";
 import { DataModelSegmentDetailPage } from "metabase-enterprise/data-studio/segments/pages/DataModelSegmentDetailPage";
@@ -24,8 +25,10 @@ export function getDataStudioMetadataRoutes() {
       />
       <Route
         path="database/:databaseId/schema/:schemaId/table/:tableId/segments/new"
-        component={DataModelNewSegmentPage}
-      />
+        component={IsAdmin}
+      >
+        <IndexRoute component={DataModelNewSegmentPage} />
+      </Route>
       <Route
         path="database/:databaseId/schema/:schemaId/table/:tableId/segments/:segmentId"
         component={DataModelSegmentDetailPage}

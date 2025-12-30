@@ -1,6 +1,8 @@
 import { t } from "ttag";
 
+import { useSelector } from "metabase/lib/redux";
 import * as Urls from "metabase/lib/urls";
+import { getUserIsAdmin } from "metabase/selectors/user";
 import { Flex } from "metabase/ui";
 import type { Table } from "metabase-types/api";
 
@@ -14,6 +16,7 @@ type TableSegmentsProps = {
 };
 
 export function TableSegments({ table }: TableSegmentsProps) {
+  const isAdmin = useSelector(getUserIsAdmin);
   const segments = table.segments ?? [];
 
   return (
@@ -26,8 +29,12 @@ export function TableSegments({ table }: TableSegmentsProps) {
           title: t`No segments yet`,
           message: t`Create a segment to filter rows in this table.`,
         }}
-        newButtonLabel={t`New segment`}
-        newButtonUrl={Urls.dataStudioPublishedTableSegmentNew(table.id)}
+        newButtonLabel={isAdmin ? t`New segment` : undefined}
+        newButtonUrl={
+          isAdmin
+            ? Urls.dataStudioPublishedTableSegmentNew(table.id)
+            : undefined
+        }
         renderItem={(segment) => (
           <EntityListItem
             key={segment.id}

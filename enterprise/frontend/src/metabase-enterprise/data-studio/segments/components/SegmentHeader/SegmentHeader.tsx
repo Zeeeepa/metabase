@@ -21,8 +21,9 @@ type SegmentHeaderProps = {
   segment: Segment;
   tabUrls: SegmentTabUrls;
   previewUrl?: string;
-  onRemove: () => void;
+  onRemove?: () => void;
   onNameChange?: (name: string) => void;
+  readOnly?: boolean;
   breadcrumbs?: ReactNode;
   actions?: ReactNode;
 };
@@ -33,6 +34,7 @@ export function SegmentHeader({
   previewUrl,
   onRemove,
   onNameChange,
+  readOnly = false,
   breadcrumbs,
   actions,
 }: SegmentHeaderProps) {
@@ -41,7 +43,11 @@ export function SegmentHeader({
       <PaneHeader
         data-testid="segment-pane-header"
         title={
-          <SegmentNameInput segment={segment} onNameChange={onNameChange} />
+          <SegmentNameInput
+            segment={segment}
+            onNameChange={onNameChange}
+            readOnly={readOnly}
+          />
         }
         icon="segment"
         menu={<SegmentMoreMenu previewUrl={previewUrl} onRemove={onRemove} />}
@@ -56,13 +62,22 @@ export function SegmentHeader({
 type SegmentNameInputProps = {
   segment: Segment;
   onNameChange?: (name: string) => void;
+  readOnly?: boolean;
 };
 
-function SegmentNameInput({ segment, onNameChange }: SegmentNameInputProps) {
+function SegmentNameInput({
+  segment,
+  onNameChange,
+  readOnly = false,
+}: SegmentNameInputProps) {
   const [updateSegment] = useUpdateSegmentMutation();
   const { sendSuccessToast, sendErrorToast } = useMetadataToasts();
 
   const handleChange = async (newName: string) => {
+    if (readOnly) {
+      return;
+    }
+
     onNameChange?.(newName);
 
     if (newName === segment.name) {
@@ -89,6 +104,7 @@ function SegmentNameInput({ segment, onNameChange }: SegmentNameInputProps) {
       maxLength={SEGMENT_NAME_MAX_LENGTH}
       onChange={handleChange}
       onContentChange={onNameChange}
+      readOnly={readOnly}
     />
   );
 }

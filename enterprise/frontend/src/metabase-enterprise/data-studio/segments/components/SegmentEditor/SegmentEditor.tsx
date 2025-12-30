@@ -9,6 +9,7 @@ import S from "./SegmentEditor.module.css";
 type SegmentEditorProps = {
   query: Lib.Query | undefined;
   description: string;
+  readOnly?: boolean;
   onQueryChange: (query: Lib.Query) => void;
   onDescriptionChange: (description: string) => void;
 };
@@ -16,6 +17,7 @@ type SegmentEditorProps = {
 export function SegmentEditor({
   query,
   description,
+  readOnly = false,
   onQueryChange,
   onDescriptionChange,
 }: SegmentEditorProps) {
@@ -23,7 +25,11 @@ export function SegmentEditor({
     <Card withBorder p="xl">
       <Stack flex={1} gap="xl" p={0} className={S.scrollable}>
         {query && (
-          <SegmentFilterEditor query={query} onChange={onQueryChange} />
+          <SegmentFilterEditor
+            query={query}
+            onChange={onQueryChange}
+            readOnly={readOnly}
+          />
         )}
         <TextInput
           label={t`Give it a description`}
@@ -31,6 +37,7 @@ export function SegmentEditor({
           value={description}
           onChange={(e) => onDescriptionChange(e.target.value)}
           maw={400}
+          readOnly={readOnly}
           classNames={{
             label: S.descriptionLabel,
           }}

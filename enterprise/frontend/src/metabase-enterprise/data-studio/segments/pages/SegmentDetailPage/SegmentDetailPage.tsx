@@ -8,6 +8,7 @@ import { LeaveRouteConfirmModal } from "metabase/common/components/LeaveConfirmM
 import { useSelector } from "metabase/lib/redux";
 import { useMetadataToasts } from "metabase/metadata/hooks";
 import { getMetadata } from "metabase/selectors/metadata";
+import { getUserIsAdmin } from "metabase/selectors/user";
 import { Button, Group } from "metabase/ui";
 import { PageContainer } from "metabase-enterprise/data-studio/common/components/PageContainer";
 import * as Lib from "metabase-lib";
@@ -34,6 +35,7 @@ export function SegmentDetailPage({
   breadcrumbs,
   onRemove,
 }: SegmentDetailPageProps) {
+  const isAdmin = useSelector(getUserIsAdmin);
   const metadata = useSelector(getMetadata);
   const { sendSuccessToast, sendErrorToast } = useMetadataToasts();
 
@@ -101,9 +103,11 @@ export function SegmentDetailPage({
         segment={segment}
         tabUrls={tabUrls}
         previewUrl={previewUrl}
-        onRemove={onRemove}
+        onRemove={isAdmin ? onRemove : undefined}
+        readOnly={!isAdmin}
         breadcrumbs={breadcrumbs}
         actions={
+          isAdmin &&
           isDirty && (
             <Group gap="sm">
               <Button onClick={handleReset}>{t`Cancel`}</Button>
@@ -122,14 +126,17 @@ export function SegmentDetailPage({
       <SegmentEditor
         query={query}
         description={description}
+        readOnly={!isAdmin}
         onQueryChange={setQuery}
         onDescriptionChange={setDescription}
       />
-      <LeaveRouteConfirmModal
-        key={segment.id}
-        route={route}
-        isEnabled={isDirty && !isSaving}
-      />
+      {isAdmin && (
+        <LeaveRouteConfirmModal
+          key={segment.id}
+          route={route}
+          isEnabled={isDirty && !isSaving}
+        />
+      )}
     </PageContainer>
   );
 }
