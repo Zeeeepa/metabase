@@ -42,10 +42,7 @@ export function useTableLoader() {
   const [tree, setTree] = useState<TreeNode>(rootNode());
 
   const getDatabases = useCallback(async () => {
-    const response = await fetchDatabases(
-      { include_editable_data_model: true },
-      true,
-    );
+    const response = await fetchDatabases({}, true);
     if (databasesRef.current.isError) {
       // Do not refetch when this call failed previously.
       // This is to prevent infinite data-loading loop as RTK query does not cache error responses.
@@ -76,7 +73,6 @@ export function useTableLoader() {
         id: databaseId,
         schema: schemaName,
         include_hidden: true,
-        include_editable_data_model: true,
       };
 
       if (
@@ -114,7 +110,6 @@ export function useTableLoader() {
       const newArgs = {
         id: databaseId,
         include_hidden: true,
-        include_editable_data_model: true,
       };
 
       if (

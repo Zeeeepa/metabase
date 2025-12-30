@@ -119,7 +119,7 @@ export function SearchNew({ query, params, filters }: SearchNewProps) {
     "unused-only": filters.unusedOnly === true ? true : undefined,
   });
   const { data: databases, isLoading: isLoadingDatabases } =
-    useListDatabasesQuery({ include_editable_data_model: true });
+    useListDatabasesQuery();
   const { isExpanded: getIsExpanded, toggle } = useExpandedState(
     {}, // we expand all nodes, so need to pass path to expand specific branch
     {

@@ -82,7 +82,7 @@ function DataModelContent({ params }: Props) {
     data: databasesData,
     error: databasesError,
     isLoading: isLoadingDatabases,
-  } = useListDatabasesQuery({ include_editable_data_model: true });
+  } = useListDatabasesQuery();
   const databaseExists = databasesData?.data?.some(
     (database) => database.id === databaseId,
   );
